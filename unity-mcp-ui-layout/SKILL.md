@@ -111,7 +111,9 @@ Use screenshots aggressively.
 ## Use the References
 
 - Read `references/layout-checklist.md` when the UI is misaligned, clipped, stretched, or behaving differently across resolutions.
+- Read `references/common-failures.md` when the UI result technically exists but still feels fragile, inconsistent, overfit to one resolution, or structurally wrong.
 - Read `references/image-to-layout.md` when the user provides a mockup, screenshot, wireframe, or other layout image plus a target resolution.
+- Read `references/mcp-call-recipes.md` when you need concrete `unity-mcp` call sequences for discovery, creation, repair, verification, or script-backed UI work.
 - Read `references/ugui-anchors-canvas-scaler.md` when the target is UGUI or when anchor, pivot, or screen-scaling behavior is causing drift.
 - Read `references/ugui-hud.md` for always-on-screen HUD, minimap, status bars, and action bars.
 - Read `references/ugui-inventory.md` for slot grids, item lists, equipment panels, and shop layouts.
