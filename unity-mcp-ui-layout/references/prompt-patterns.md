@@ -1,0 +1,145 @@
+# Prompt Patterns for Unity MCP UI Work
+
+Use these patterns to keep UI work incremental and verifiable.
+
+## Pattern 1: Start With Discovery
+
+Use when the scene already contains UI.
+
+```text
+Inspect the current scene UI before editing anything.
+Identify whether this is UGUI or UI Toolkit.
+List the root UI objects/files, the scaling setup, and the likely source of the layout issue.
+Do not modify assets yet.
+```
+
+## Pattern 2: Build the Shell First
+
+Use when creating a new interface from scratch.
+
+```text
+Create only the root UI shell for this screen.
+Set up the correct canvas or root visual element, scaling rules, and the main top-level regions.
+Do not add detailed widgets yet.
+After creating the shell, capture a screenshot and summarize what still needs adjustment.
+```
+
+## Pattern 3: Add One Region
+
+Use after the shell is stable.
+
+```text
+Add only the [header/content/footer/sidebar/modal] region.
+Keep layout rules clean and avoid hard-coded positions unless unavoidable.
+After the change, capture a screenshot and check for clipping, uneven spacing, or anchor issues.
+```
+
+## Pattern 4: Repair a Broken Layout
+
+Use when the current UI exists but looks wrong.
+
+```text
+Fix this layout without redesigning unrelated parts.
+Inspect the parent chain first and explain whether the issue comes from scaling, anchors/flex rules, text sizing, or conflicting layout controllers.
+Apply the smallest structural fix, then verify with a screenshot.
+```
+
+## Pattern 5: Cross-Resolution Verification
+
+Use before finalizing.
+
+```text
+Verify this UI at the main target resolution and at one additional aspect ratio.
+Report which elements stretch, clip, drift, or bunch together.
+Only make the minimum changes needed to stabilize the layout across both views.
+```
+
+## Pattern 6: Image Plus Resolution Layout Build
+
+Use when the user provides a mockup or screenshot and target resolution.
+
+```text
+Use the attached layout image as the composition reference and [WIDTHxHEIGHT] as the reference resolution.
+Before creating objects, identify the major UI regions and estimate each region's normalized position and size.
+Create the parent containers and anchors first.
+Do not translate the image into raw pixel coordinates unless a fixed-size element truly requires it.
+After implementation, capture a screenshot and compare it against the reference image.
+Use `manage_camera` for the screenshot capture.
+```
+
+## Pattern 7: Image-Based Layout Repair
+
+Use when the current UI should match an image more closely.
+
+```text
+Compare the current UI against the provided layout image at [WIDTHxHEIGHT].
+Find where the composition diverges.
+Fix parent containers, anchors, and scaling rules before adjusting local offsets.
+Keep the repair proportional to the reference image, not tied to arbitrary screen pixels.
+Use `manage_camera` to verify the repaired result against the image.
+```
+
+## Pattern 8: Script-Aware UI Editing
+
+Use when script changes are necessary.
+
+```text
+Make the required script or component changes for this UI feature.
+After editing scripts, run `refresh_unity`, wait for compilation, and use `read_console` for errors before continuing with more UI work.
+Then use `manage_camera` to capture a screenshot and confirm the UI still matches the intended layout.
+```
+
+## Pattern 9: Default Repair Strategy
+
+Use when the request is vague.
+
+```text
+Do not generate the whole UI at once.
+Inspect first, then create or fix the interface in small slices.
+Prioritize structure over visual polish, and verify each slice with a screenshot before moving on.
+```
+
+## Pattern 10: UGUI HUD Build
+
+Use when building or repairing a HUD.
+
+```text
+Build this screen as UGUI HUD.
+Use a `Canvas -> SafeAreaRoot -> HUDRoot` structure and create corner or center containers before leaf widgets.
+Choose anchors by screen role: top-left, top-right, bottom-left, bottom-right, bottom-center, or center.
+Do not hand-place repeated buttons or status icons if a layout group should own them.
+After implementation, capture a screenshot at [WIDTHxHEIGHT] and one alternate aspect ratio.
+```
+
+## Pattern 11: UGUI Inventory Build
+
+Use when building inventories, shops, crafting panels, or equipment windows.
+
+```text
+Build this UI as a UGUI inventory-style panel.
+Create the main panel first, then split it into navigation, list or grid, detail panel, and bottom actions as needed.
+Use layout groups for repeated slots and rows instead of manually positioning each slot.
+Keep sizing parent-driven and verify that the detail panel does not overlap the list at [WIDTHxHEIGHT].
+```
+
+## Pattern 12: UGUI Popup Build
+
+Use when building or repairing a modal popup.
+
+```text
+Build this UI as a UGUI popup with `Canvas -> ModalLayer`, and keep `Dimmer` and `PopupRoot` as siblings under `ModalLayer`.
+Apply safe-area handling to `PopupRoot`, not to `ModalLayer` and not to individual popup children.
+Keep the dimmer full-screen and keep popup content local to `PopupRoot`.
+Use centered anchors for the popup by default, then use `manage_camera` to verify that close buttons and footer actions stay inside the safe area at [WIDTHxHEIGHT].
+```
+
+## Pattern 13: UGUI Mobile Safe Area Repair
+
+Use when mobile UI clips into the notch, rounded corners, or home indicator area.
+
+```text
+Repair this mobile UGUI layout with explicit safe-area ownership.
+Use `SafeAreaRoot` for normal full-screen UI, but for modal popups apply safe-area handling to `PopupRoot`.
+Remove duplicate per-widget safe-area offsets where a single parent should own them.
+Verify both portrait and landscape and report any controls that still touch unsafe edges.
+```

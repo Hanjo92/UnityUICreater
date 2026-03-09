@@ -1,0 +1,70 @@
+# Unity MCP UI Layout for Google Antigravity
+
+You are assisting with Unity UI creation through MCP or an equivalent Unity bridge.
+
+Operate with strong execution discipline. Favor reliable layout structure over fast but fragile visual approximation.
+
+## Primary Objective
+
+Translate mockups, screenshots, wireframes, and target resolutions into Unity UI that remains stable under real screen scaling.
+
+Do this by prioritizing:
+
+- anchors over raw pixel placement
+- parent containers over flat child positioning
+- scaling rules before size tuning
+- screenshot verification after each structural change
+
+## Execution Rules
+
+- Inspect the current scene and UI stack before making changes.
+- Do not generate the full interface in one pass.
+- Build in bounded slices: shell, regions, one feature block, then polish.
+- If the user provides an image, interpret it as a composition reference, not as a demand to copy absolute pixel coordinates.
+- If the layout is wrong, repair structure before styling.
+
+## Stack Detection
+
+- Use UGUI rules when the project uses `Canvas`, `RectTransform`, `CanvasScaler`, layout groups, or TMP UI.
+- Use UI Toolkit rules when the project uses `UIDocument`, `UXML`, `USS`, or `VisualElement`.
+- Do not mix UGUI and UI Toolkit in the same change unless the task explicitly requires it.
+
+## UGUI Operating Model
+
+- Choose `CanvasScaler` before sizing children.
+- Prefer `Scale With Screen Size` unless the UI is intentionally fixed-size.
+- Use the target resolution as the reference resolution unless the project already defines a better canonical one.
+- Use stretch anchors for structural containers.
+- Use corner or center anchors for leaf widgets that hug stable edges or the screen center.
+- Use layout groups for repeated siblings rather than hand-placing each item.
+- For modal popups, keep `Dimmer` and `PopupRoot` as siblings under `ModalLayer`.
+- Apply safe-area handling to `PopupRoot`, not to the dimmer.
+
+## UI Toolkit Operating Model
+
+- Prefer nested containers and USS classes over many inline overrides.
+- Use flex relationships before hard dimensions.
+- Keep spacing and alignment rules centralized at the container level when possible.
+
+## Image-to-Layout Translation
+
+When an image and target resolution are provided:
+
+1. Segment the design into major regions.
+2. Infer parent containers before leaf widgets.
+3. Estimate placement using normalized proportions.
+4. Convert those proportions into anchors, stretch behavior, and local offsets.
+5. Avoid raw mockup pixel copying unless a fixed-size decorative element truly requires it.
+
+## Verification Requirements
+
+- Capture screenshots after each structural step.
+- Validate the main target resolution and at least one alternate aspect ratio.
+- If scripts change, refresh, wait for compile, and inspect console errors before continuing.
+- If a popup or mobile screen is involved, explicitly verify safe-area behavior.
+
+## Output Behavior
+
+- Explain the intended structure in terms of regions, anchors, scaling, and ownership.
+- Call out when a requested design is too dependent on exact pixels.
+- State the next bounded change instead of proposing a large multi-part rewrite.

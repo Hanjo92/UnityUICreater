@@ -1,0 +1,104 @@
+# Image to Layout Rules
+
+Use this guide when the user provides a layout image, mockup, wireframe, or screenshot together with a target resolution.
+
+## Goal
+
+Translate a visual reference into Unity UI that is stable at the target resolution and anchored by screen relationships, not by arbitrary absolute pixels.
+
+## Input Rules
+
+Require these inputs when available:
+
+- One layout image
+- One target resolution such as `1920x1080` or `1080x1920`
+- The intended UI stack if already known: UGUI or UI Toolkit
+- Any fixed constraints such as safe area, notch area, or margins
+
+If the image is the only reliable source of truth, use it as the composition reference.
+
+## Translation Procedure
+
+### 1. Segment the image
+
+Break the layout into:
+
+- Root frame
+- Major regions
+- Repeated groups
+- Atomic widgets
+
+Do not jump directly from whole image to dozens of leaf nodes.
+
+### 2. Estimate normalized geometry
+
+For each major element, estimate:
+
+- Left ratio: `x / screen_width`
+- Top ratio: `y / screen_height`
+- Width ratio: `w / screen_width`
+- Height ratio: `h / screen_height`
+
+Treat these as planning values, not necessarily as final serialized numbers.
+
+### 3. Pick anchor strategy by region
+
+Use these defaults:
+
+- Top bar or top-left HUD: top anchors
+- Bottom HUD or action bar: bottom anchors
+- Side panel: left or right stretch against its screen edge
+- Center dialog: centered anchors with stable width/height constraints
+- Full content body: stretch anchors inside a bounded parent
+
+Anchor according to the element's relationship to the screen, not according to whichever raw coordinates are easiest to enter.
+
+### 4. Build parent containers first
+
+Create the parent zones before children:
+
+- Safe area root
+- Header/footer/sidebar/content containers
+- Nested rows, columns, or grids
+
+Once the parent is right, many child values become smaller and more stable.
+
+### 5. Convert proportions into concrete values
+
+For a given target resolution:
+
+- Use ratios to decide anchor placement and stretch behavior.
+- Use offsets for local spacing from the anchor frame.
+- Use width/height values only after parent and anchor decisions are made.
+
+Prefer "anchored top-right with 4% inset" over "x=1798, y=54".
+
+## UGUI Rules
+
+- Set `CanvasScaler` before evaluating final element size.
+- If the UI is composition-driven, use a reference resolution matching the user-provided target resolution.
+- Pick `Scale With Screen Size` by default unless the UI is intentionally non-responsive.
+- Set `Match Width Or Height` deliberately based on which axis preserves composition better.
+- Use anchor presets that match the image region before setting `anchoredPosition`.
+- Use stretch anchors for structural containers and corner/center anchors for leaf widgets.
+- For groups of siblings, prefer layout groups and padding to repeated manual offsets.
+- Align pivot with anchor and expected growth or animation direction.
+- Keep manual positions only for isolated decorative elements or deliberate overlaps.
+
+## UI Toolkit Rules
+
+- Translate image regions into nested containers with flex rules.
+- Use percentage or flex relationships at container level where possible.
+- Move repeated spacing, alignment, and sizing logic into USS classes.
+- Avoid many per-element inline absolute values unless the design is intentionally fixed.
+
+## Review Questions
+
+Before calling the result correct, verify:
+
+- Does the composition match the image at the target resolution?
+- Are anchors consistent with the element's visual role?
+- If the resolution changes a little, does the UI still preserve intent?
+- Are any values suspiciously pixel-specific where a ratio or container rule should exist?
+
+If the answer to the last question is yes, refactor before continuing.

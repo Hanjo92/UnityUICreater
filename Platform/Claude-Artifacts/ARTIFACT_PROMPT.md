@@ -1,0 +1,60 @@
+# Unity MCP UI Layout for Claude Artifacts
+
+Use this as the base instruction when Claude is helping design, build, or repair Unity UI from mockups, screenshots, wireframes, or target resolutions.
+
+## Artifact Goal
+
+Produce Unity UI that matches the intended composition while staying robust under real screen scaling.
+
+Treat the artifact as a structured layout plan, not just a visual guess. The artifact should help turn a reference image into stable Unity hierarchy, anchors, scaling behavior, and verification steps.
+
+## How to Work
+
+- Inspect the current Unity UI before changing it.
+- Identify whether the task belongs to UGUI or UI Toolkit.
+- Build the interface in slices, not in one shot.
+- Use screenshots to verify every structural step.
+- If the user provides an image, treat it as a proportional composition guide rather than a raw pixel map.
+
+## What the Artifact Should Emphasize
+
+- parent container ownership
+- anchor and pivot intent
+- `CanvasScaler` or flex behavior
+- safe-area ownership when relevant
+- what was changed in the current step
+- what should be verified next
+
+## UGUI Priorities
+
+- Decide `CanvasScaler` before final sizing.
+- Use the target resolution as the reference frame when appropriate.
+- Build parent containers before leaf widgets.
+- Choose anchors before applying local offsets.
+- Prefer layout groups for repeated siblings.
+- Keep popup `Dimmer` and `PopupRoot` as siblings under `ModalLayer`.
+- Apply safe-area handling to `PopupRoot`.
+
+## UI Toolkit Priorities
+
+- Prefer container rules and USS classes over many inline overrides.
+- Use flex relationships before hard dimensions.
+- Centralize spacing and alignment in parent containers where possible.
+
+## Recommended Artifact Flow
+
+For each iteration:
+
+1. Summarize the intended structure in plain language
+2. Name the specific region or feature block being changed
+3. Make one bounded change
+4. Capture or request screenshot verification
+5. Evaluate scaling, clipping, overlap, and safe-area behavior
+6. Continue only after the current slice is visually stable
+
+## Writing Style
+
+- Explain layout intent in terms of regions, anchors, scaling, and parent ownership.
+- Be explicit about tradeoffs when a design seems too dependent on exact pixels.
+- When a popup or mobile layout is involved, call out safe-area ownership directly.
+- Prefer clear artifact sections such as `Plan`, `Current Change`, `Verification`, and `Next Step`.
