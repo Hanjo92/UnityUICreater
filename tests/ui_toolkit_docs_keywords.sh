@@ -109,19 +109,19 @@ assert_link "$examples_readme" "../unity-mcp-ui-layout/references/ui-stack-selec
 assert_link "$examples_readme" "../unity-mcp-ui-layout/references/ui-toolkit-build-workflow.md" "examples UI Toolkit navigation"
 assert_link "$examples_readme" "./ui-toolkit-from-mockup-example.md" "examples UI Toolkit walkthrough navigation"
 
-root_start="$(section "$root_readme" '## Start Here / 시작점')"
+root_start="$(section "$root_readme" '## Start Here')"
 assert_precedes "$root_start" "Choose the UI stack first" "neutral layer-to-layout tree" "root start guide"
 
 assert_contains "$(preamble "$root_readme")" "neutral layer-to-layout tree" "root introduction"
-assert_contains "$(section "$root_readme" '## Quick Rules / 빠른 작업 기준')" "neutral layer-to-layout tree" "root quick rules"
+assert_contains "$(section "$root_readme" '## Quick Rules')" "neutral layer-to-layout tree" "root quick rules"
 assert_contains "$(section "$platform_readme" '## Intent / 목적')" "neutral layer-to-layout tree" "platform intent"
 assert_contains "$(section "$examples_readme" '## Quick Rules')" "neutral layer-to-layout tree" "examples quick rules"
 assert_contains "$(section "$examples_readme" '## How to Use')" "neutral layer-to-layout tree" "examples usage rules"
 
 for scoped_doc in \
   "$(preamble "$root_readme")|root introduction" \
-  "$(section "$root_readme" '## Quick Rules / 빠른 작업 기준')|root quick rules" \
-  "$(section "$root_readme" '## Notes / 참고')|root notes" \
+  "$(section "$root_readme" '## Quick Rules')|root quick rules" \
+  "$(section "$root_readme" '## Notes')|root notes" \
   "$(section "$platform_readme" '## Intent / 목적')|platform intent" \
   "$(section "$examples_readme" '## Quick Rules')|examples quick rules" \
   "$(section "$examples_readme" '## How to Use')|examples usage rules" \

@@ -1,297 +1,173 @@
-﻿# Unity MCP UI Layout
+# Unity MCP UI Layout
 
-Reusable Unity UI workflow rules for `unity-mcp`, packaged first as a Codex skill and then adapted for other LLM platforms.
+**English** | [한국어](./README.ko.md) | [简体中文](./README.zh-CN.md)
 
-`unity-mcp`를 사용할 때 Unity UI를 더 안정적으로 만들기 위한 워크플로 규칙 모음입니다. 기본 형태는 Codex 스킬이며, 다른 LLM 플랫폼에서도 사용할 수 있도록 확장되어 있습니다.
+Reusable Unity UI workflow rules for `unity-mcp`, packaged as a Codex skill with adapters for other LLM platforms.
 
-Current release / 최신 릴리스: [v0.7.0](https://github.com/Hanjo92/unity-mcp-ui-layout/releases/tag/v0.7.0) · [Changelog / 변경 기록](./CHANGELOG.md)
+Create a neutral layer-to-layout tree from a mockup, screenshot, structured export, or target resolution, then implement it with the selected UI stack's layout, reuse, scaling, and verification mechanisms. Establish top-level region ownership before leaf details, reuse repeated structures, and keep single-image resources intact unless runtime behavior requires a split.
 
-The repository is built around one core idea: when an LLM creates Unity UI from a mockup, screenshot, structured export, or target resolution, it should first produce a neutral layer-to-layout tree, then use the selected stack's layout, reuse, scaling, and verification mechanisms instead of copying raw pixels.
+Current release: [v0.7.0](https://github.com/Hanjo92/unity-mcp-ui-layout/releases/tag/v0.7.0) · [Changelog](./CHANGELOG.md)
 
-이 저장소의 핵심 아이디어는 하나입니다. LLM이 목업, 스크린샷, structured export, 목표 해상도를 바탕으로 Unity UI를 만들 때, 먼저 중립 `layer-to-layout tree`를 만들고 선택한 스택의 레이아웃, 재사용, 스케일링, 검증 수단으로 구현해야 한다는 점입니다.
+## Start Here
 
-It also assumes three practical defaults: establish top-level region ownership before leaf details, express repeated structures with the selected stack's reusable mechanism, and keep likely single-image resources intact unless runtime behavior requires them to be split.
-
-또한 세 가지 실무 기본값을 전제로 합니다. leaf 세부 요소보다 top-level 영역 소유 관계를 먼저 정하고, 반복 구조는 선택한 스택의 재사용 수단으로 표현하며, 단일 이미지 리소스로 보이는 영역은 런타임 동작상 분리가 필요할 때만 쪼갭니다.
-
-## Bias And Tradeoff / 작업 성향
-
-This workflow biases toward stable structure, scoped changes, and explicit verification over one-shot mockup mimicry.
-
-For trivial one-widget nudges, use judgment rather than forcing every step mechanically.
-
-이 워크플로는 one-shot 목업 복제보다 안정적인 구조, 범위가 분명한 변경, 명시적인 검증을 우선합니다.
-
-아주 작은 위젯 미세 조정 작업에서는 모든 단계를 기계적으로 강제하기보다 상황에 맞게 판단하는 편이 좋습니다.
-
-## Start Here / 시작점
-
-If you are using this repository for the first time, do not start by reading every file.
-
-처음 이 저장소를 쓰는 경우, 모든 파일을 처음부터 끝까지 읽는 방식으로 시작하지 않는 편이 좋습니다.
-
-1. Open [`unity-mcp-ui-layout/SKILL.md`](./unity-mcp-ui-layout/SKILL.md) first if you are using the Codex skill directly.
+1. Open [`unity-mcp-ui-layout/SKILL.md`](./unity-mcp-ui-layout/SKILL.md) for the canonical workflow.
 2. Choose the UI stack first, before realization: `UGUI` or `UI Toolkit`.
 3. Choose the change mode: repair an existing screen or build a new one.
-4. For a new screen or redesign, resolve open design and structure choices through sequential questions, then agree on the neutral layer-to-layout tree before realization. Carry forward prior answers.
-5. With a mockup, inspect and reuse suitable project images; for missing roles, ask about generation and generate only with an available image-generation skill and usable execution path. Without that skill, skip both even if a standalone image tool exists. Honor explicit layout-only requests.
-6. If the task includes Stitch HTML/CSS, Figma node-tree exports, `DESIGN.md`, design tokens, or another design source, identify whether it is a hierarchy source, a style source, or both before editing.
-7. Then open [`examples/README.md`](./examples/README.md) for a task-shaped entry point, [`unity-mcp-ui-layout/references/agent-runbook.md`](./unity-mcp-ui-layout/references/agent-runbook.md) for agent execution order, or jump into [`unity-mcp-ui-layout/references/README.md`](./unity-mcp-ui-layout/references/README.md) if you already know the failure mode.
+4. For a new screen or redesign, resolve open design and structure choices through sequential questions, then agree on the neutral layer-to-layout tree. Carry forward prior answers.
+5. With a mockup, inspect and reuse suitable project images. For missing roles, ask about generation and generate only with an available image-generation skill and usable execution path. Without that skill, skip both even if a standalone image tool exists. Honor explicit layout-only requests.
+6. For Stitch HTML/CSS, Figma node-tree exports, `DESIGN.md`, or design tokens, identify hierarchy sources and style sources before editing.
+7. Choose a task from [`examples/README.md`](./examples/README.md), follow the [agent runbook](./unity-mcp-ui-layout/references/agent-runbook.md), or consult the [reference index](./unity-mcp-ui-layout/references/README.md) for a specific rule or failure mode.
 
-For a first small exercise, start with [`examples/first-layout-pass-example.md`](./examples/first-layout-pass-example.md) before choosing a more domain-specific example.
+For a small first exercise, use the [first layout pass example](./examples/first-layout-pass-example.md). Natural requests such as “build this Unity UI from the attached UI mockup” or “create Unity UI prefabs from this design screenshot” should activate the skill without naming it explicitly.
 
-Codex should also treat natural requests such as "build this Unity UI from the attached UI mockup" or "create Unity UI prefabs from this design screenshot" as matching this skill without naming the skill explicitly.
+The workflow favors stable structure, scoped changes, and explicit verification. Small widget adjustments do not need every planning step.
 
-1. Codex 스킬을 직접 쓴다면 먼저 [`unity-mcp-ui-layout/SKILL.md`](./unity-mcp-ui-layout/SKILL.md)부터 엽니다.
-2. UI 스택을 구현 전에 먼저 고릅니다: `UGUI` 또는 `UI Toolkit`.
-3. 기존 화면 수정인지, 신규 화면 생성인지 작업 모드를 고릅니다.
-4. 새 화면이나 재설계는 미정인 시안과 구조를 순차적으로 질문하고, 구현 전에 중립 `layer-to-layout tree`를 확정합니다. 이미 답한 내용은 유지합니다.
-5. 시안이 있으면 프로젝트 이미지를 확인하고 적합한 리소스를 재사용합니다. 이미지 생성 스킬을 보유하고 실행할 수 있을 때만 부족한 임시 리소스의 생성 여부를 묻고 생성합니다. 스킬이 없으면 도구만 있어도 질문·생성을 생략하며, 명시적인 layout-only 요청은 우선합니다.
-6. 작업에 Stitch HTML/CSS, Figma node-tree export, `DESIGN.md`, design token, 또는 다른 design source가 포함되어 있다면 수정 전에 그것이 구조 소스인지, 스타일 소스인지, 둘 다인지 먼저 구분합니다.
-7. 그 후 작업형 진입점이 필요하면 [`examples/README.md`](./examples/README.md)를, 에이전트 실행 순서가 필요하면 [`unity-mcp-ui-layout/references/agent-runbook.md`](./unity-mcp-ui-layout/references/agent-runbook.md)를, 실패 유형을 이미 알고 있다면 [`unity-mcp-ui-layout/references/README.md`](./unity-mcp-ui-layout/references/README.md)를 엽니다.
+## Planning and Image Resources
 
-처음 해볼 작은 연습 과제가 필요하다면 더 구체적인 예시를 고르기 전에 [`examples/first-layout-pass-example.md`](./examples/first-layout-pass-example.md)부터 시작합니다.
+Follow [UI planning](./unity-mcp-ui-layout/references/ui-planning-workflow.md), then the [image asset workflow](./unity-mcp-ui-layout/references/image-asset-workflow.md). Agree on unresolved design and structure choices, reuse suitable project images, and generate only the agreed gaps when a qualified executor is available. Missing asset indexes use direct project discovery.
 
-Codex는 "첨부한 UI 시안을 기준으로 Unity UI를 만들어줘" 또는 "이 시안으로 프리팹 생성해줘"처럼 스킬명을 명시하지 않는 자연어 요청도 이 스킬 대상으로 봐야 합니다.
+Generated images are inspected, imported, assigned, and visually verified in the chosen UI stack. Temporary-resource authorization does not make the art final. The [worked example](./examples/planned-ui-with-project-images-example.md) covers prior answers, generation declined/unavailable, and both UI stacks.
 
-## Planning and Image Resources / 단계별 계획과 이미지 리소스
+## Mixed Agents and Orchestration
 
-Follow [UI planning](./unity-mcp-ui-layout/references/ui-planning-workflow.md), then the [image asset workflow](./unity-mcp-ui-layout/references/image-asset-workflow.md). Agree on unresolved design and structure choices, reuse suitable project images, and generate only the agreed gaps when a qualified executor is available. Missing asset indexes use direct project discovery. The [worked example](./examples/planned-ui-with-project-images-example.md) covers prior answers, generation declined/unavailable, and both UI stacks.
+For Orca/Paseo-managed sessions, Claude/OpenCode workers, or API delegates, follow [agent capability routing](./unity-mcp-ui-layout/references/agent-capability-routing.md) and the [mixed-agent example](./examples/mixed-agent-ui-workflow-example.md). Verify capabilities in each executing session before assigning roles. Provider names and parent capabilities do not qualify a child.
 
-단계별 질문부터 이미지 적용까지는 [UI 계획 흐름](./unity-mcp-ui-layout/references/ui-planning-workflow.md), [이미지 리소스 흐름](./unity-mcp-ui-layout/references/image-asset-workflow.md), [대화 예제](./examples/planned-ui-with-project-images-example.md)를 참고합니다. 자산 인덱스가 없어도 프로젝트 이미지를 직접 찾고, 생성 이미지는 선택한 UI 스택에서 검수·임포트·할당·화면 검증까지 진행합니다.
-
-## Mixed Agents and Orchestration / 서브에이전트와 오케스트레이션
-
-For Orca/Paseo-managed sessions, Claude/OpenCode workers, or API delegates, follow [agent-capability-routing.md](./unity-mcp-ui-layout/references/agent-capability-routing.md) and the [mixed-agent example](./examples/mixed-agent-ui-workflow-example.md). Verify capabilities in each executing session before assigning roles. Provider names and parent capabilities do not qualify a child. Only the designated coordinator may relay a verified generator's question; a skill-less implementation child cannot ask or forward it.
-
-| Role / 역할 | Required evidence / 필요한 근거 |
+| Role | Required evidence |
 | --- | --- |
-| Image analysis and visual QA / 이미지 분석·시각 검수 | Actual image delivery and interpretation for the current revision / 현재 이미지가 실제로 전달되고 내용을 확인할 수 있어야 함 |
-| Image generation / 이미지 생성 | The same executor has read its generation skill and has a usable execution path / 생성 담당자가 스킬을 읽고 실행 경로를 갖춰야 함 |
-| Structure and code / 구조·코드 구현 | An approved structured plan and access to assigned files / 승인된 구조·측정 정보와 담당 파일 접근 권한 |
-| Unity application and capture / Unity 적용·촬영 | Verified project/Editor access and the relevant tools / 해당 프로젝트·Editor 접근과 작업 도구 확인 |
+| Image analysis and visual QA | Actual image delivery and interpretation for the current revision |
+| Image generation | The same executor has read its generation skill and has a usable execution path |
+| Structure and code | An approved structured plan and access to assigned files |
+| Unity application and capture | Verified project/Editor access and the relevant tools |
 
-Orca·Paseo·Claude·OpenCode·API 등 이름으로 기능을 가정하지 않고 실행 세션별로 확인합니다. 비전이 없는 작업자는 확인된 구조·좌표·자산 정보를 받아 구현하고, 이미지 분석과 시각 검수는 실제 이미지를 볼 수 있는 담당자에게 배정합니다. 생성 스킬·도구는 생성 담당자에게 있어야 하며, 총괄은 검증된 담당자의 생성 질문만 전달할 수 있습니다. 촬영·임포트·코드 검사 성공과 시각 검증 결과를 구분하고, 팀에 비전이 없으면 필요한 이미지 분석과 시각 검증은 미완료로 남깁니다.
+Only the designated coordinator may relay a verified generator's question; a skill-less implementation child cannot ask or forward it. Text-only workers use approved structure, measurements, and asset references. Qualified visual owners analyze images and review final screenshots. Capture, import, or code-check success does not establish visual quality. If the team lacks vision, required image analysis and visual verification remain pending.
 
-## Quick Rules / 빠른 작업 기준
+## Quick Rules
 
 - Establish top-level region ownership and container relationships before tuning leaf widgets.
-- When a mockup or UI 시안 exists, create a neutral layer-to-layout tree before creating objects.
-- After stack selection, map that tree to the selected stack's native hierarchy, styling, and reuse mechanisms.
-- Add a screen host only when the selected runtime path requires one; reusable UI intent alone does not require a host object.
-- If semi-automated raster item detection is used, keep candidates in a candidate item ledger until reviewed.
-- For split runtime/repeated items from a mockup, record item-level UI rects: source rect, normalized rect, Unity fit intent, and asset/crop plan.
-- Express repeated UI structures through the selected stack's reusable mechanism.
-- Keep likely single-image regions intact unless interaction, animation, or adaptive behavior requires decomposition.
+- With a mockup, create a neutral layer-to-layout tree before creating objects.
+- Map that tree to the selected stack's native hierarchy, styling, and reuse mechanisms.
+- Add a screen host only when the runtime path requires one; reusable UI intent alone does not require a host.
+- Keep semi-automated raster detections in a candidate item ledger until reviewed.
+- For split runtime/repeated items, record source rect, normalized rect, Unity fit intent, and asset/crop plan.
+- Express repeated structures through the selected stack's reusable mechanism.
+- Keep single-image regions intact unless interaction, animation, or adaptive behavior requires decomposition.
 - Verify structure with screenshots instead of chasing raw pixel alignment.
 
-- leaf widget를 만지기 전에 top-level 영역 소유 관계와 container 관계를 먼저 정합니다.
-- UI 시안이나 목업이 있으면 오브젝트 생성 전에 중립 `layer-to-layout tree`를 먼저 만들고 승인합니다.
-- 스택 선택 후 이 트리를 선택한 스택의 native hierarchy, styling, reuse 수단으로 옮깁니다.
-- 선택한 runtime 경로에 screen host가 필요할 때만 추가하며, 재사용 UI 의도만으로 host object를 만들지 않습니다.
-- 반자동 raster item detection을 쓴다면 검토 전 후보는 candidate item ledger에만 둡니다.
-- 목업에서 분리되는 runtime/repeated item은 source rect, normalized rect, Unity fit intent, asset/crop plan을 포함한 item-level UI rect를 기록합니다.
-- 반복되는 UI 구조는 선택한 스택의 재사용 수단으로 표현합니다.
-- 단일 이미지 리소스로 보이는 영역은 상호작용, 애니메이션, 적응형 동작이 필요할 때만 분해합니다.
-- raw pixel 정렬을 쫓기보다 스크린샷으로 구조를 검증합니다.
+## Mockup to UI Toolkit
 
-## Mockup-To-UI Toolkit / 목업에서 UI Toolkit으로
+Follow this path in order:
 
-For a mockup-driven UI Toolkit screen, follow this public path in order: select the stack in [`ui-stack-selection.md`](./unity-mcp-ui-layout/references/ui-stack-selection.md), approve the neutral `mockup-layout-plan/v2` artifact from [`templates/mockup-layout-plan.yaml`](./templates/mockup-layout-plan.yaml), then realize it with [`ui-toolkit-build-workflow.md`](./unity-mcp-ui-layout/references/ui-toolkit-build-workflow.md). The canonical machine-readable examples are [`mockup-layout-plan-prefab-example.yaml`](./examples/mockup-layout-plan-prefab-example.yaml) and [`mockup-layout-plan-ui-toolkit-example.yaml`](./examples/mockup-layout-plan-ui-toolkit-example.yaml); the canonical walkthrough is [`ui-toolkit-from-mockup-example.md`](./examples/ui-toolkit-from-mockup-example.md).
+1. Select the stack in [ui-stack-selection.md](./unity-mcp-ui-layout/references/ui-stack-selection.md).
+2. Approve the neutral `mockup-layout-plan/v2` artifact from [templates/mockup-layout-plan.yaml](./templates/mockup-layout-plan.yaml).
+3. Implement it with [ui-toolkit-build-workflow.md](./unity-mcp-ui-layout/references/ui-toolkit-build-workflow.md).
 
-목업 기반 UI Toolkit 화면은 [`ui-stack-selection.md`](./unity-mcp-ui-layout/references/ui-stack-selection.md)에서 스택을 먼저 선택하고, [`templates/mockup-layout-plan.yaml`](./templates/mockup-layout-plan.yaml)의 중립 `mockup-layout-plan/v2` 산출물을 승인한 다음, [`ui-toolkit-build-workflow.md`](./unity-mcp-ui-layout/references/ui-toolkit-build-workflow.md)로 realization합니다. 정본 machine-readable 예시는 [`mockup-layout-plan-prefab-example.yaml`](./examples/mockup-layout-plan-prefab-example.yaml)과 [`mockup-layout-plan-ui-toolkit-example.yaml`](./examples/mockup-layout-plan-ui-toolkit-example.yaml)이며, 정본 walkthrough는 [`ui-toolkit-from-mockup-example.md`](./examples/ui-toolkit-from-mockup-example.md)입니다.
+The canonical YAML examples cover [UGUI prefab intent](./examples/mockup-layout-plan-prefab-example.yaml) and [UI Toolkit realization](./examples/mockup-layout-plan-ui-toolkit-example.yaml). See the [UI Toolkit walkthrough](./examples/ui-toolkit-from-mockup-example.md) for a complete example.
 
-## Quick Success Signal / 빠른 완료 신호
+## Completion Checks
 
-- the layout still holds at the main target and one additional aspect ratio
-- text still behaves correctly with longer labels, counters, or localization growth
-- shared assets were either left alone, localized safely, or explicitly verified before base edits
-- script-backed UI changes do not leave unresolved compile or console errors
+- Layout holds at the main target and one additional aspect ratio.
+- Text handles longer labels, counters, and localization growth.
+- Shared assets are preserved, changed locally, or verified across another known usage before base edits.
+- Script-backed changes leave no unresolved compile or console errors.
+- Required visual review covers the current output revision; technical checks and user art acceptance are reported separately.
 
-- 메인 타깃 해상도와 추가 비율 한 가지에서 레이아웃이 유지됩니다
-- 긴 라벨, 카운터, 지역화 문자열 증가에도 텍스트 동작이 무너지지 않습니다
-- shared asset는 그대로 두었거나, 안전하게 국소화했거나, base 수정 전에 명시적으로 검증했습니다
-- 스크립트가 얽힌 UI 변경이 미해결 컴파일/콘솔 오류를 남기지 않습니다
+## What This Helps With
 
-## Default Platform / 기본 플랫폼
+- Mockup and screenshot analysis: native resolution, layer trees, candidate review, item rects, crop plans, and asset granularity.
+- UGUI: anchors, `CanvasScaler`, prefab reuse/variants, static sprites versus texture-driven `RawImage`, and safe shared-asset edits.
+- UI Toolkit: container ownership, flex layout, UXML/USS, reusable `VisualTreeAsset` templates, and text overflow.
+- Structured design intake: Stitch HTML/CSS, Figma node trees, `DESIGN.md`, design tokens, and mappings to Unity styling.
+- Asset reuse: discovery priority, project images, naming/folders, shared versus screen-owned resources, and qualified generation.
+- Responsive UI: HUDs, inventories, popups, scroll views, mobile safe areas, taller phones, wider ratios, and tablet profiles.
+- Text and localization: wrapping, truncation, auto-size discipline, long labels, multiline body text, and growing counters.
+- Build and repair: bounded changes, current-vs-mockup comparisons, MCP call recipes, screenshot loops, and failure recovery.
 
-The default platform is `Codex`.
+## Repository Guide
 
-기본 플랫폼은 `Codex`입니다.
+| Path | Purpose |
+| --- | --- |
+| [unity-mcp-ui-layout/](./unity-mcp-ui-layout) | Canonical installable skill: `SKILL.md`, agent metadata, and detailed references |
+| [Platform/](./Platform) | Codex, Google Antigravity, and Claude Artifacts adapters |
+| [examples/](./examples/README.md) | Copyable prompts and task walkthroughs |
+| [templates/mockup-layout-plan.yaml](./templates/mockup-layout-plan.yaml) | Neutral layout plan template |
+| [tests/](./tests) | Documentation, metadata, and schema checks |
+| [tests/forward/](./tests/forward) | Retained prompts, reports, and diagnostic fixtures |
+| [docs/validation/](./docs/validation) | Observed live runs and their limits |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Contribution workflow and scope guidance |
 
-The canonical skill lives in:
+Start with the skill and a relevant example; open deeper references as needed. The UI Toolkit documentation check also verifies public routing, plan links, platform prompts, and release-document guidance. Checking stored reports does not launch new agents.
 
-정본 스킬은 아래 경로에 있습니다.
+## Platform Notes
 
-- [`unity-mcp-ui-layout/`](./unity-mcp-ui-layout)
+### Codex
 
-Platform-specific adapters live in:
+Codex is the default platform. Copy the canonical skill folder into your Codex skills directory using the commands below.
 
-플랫폼별 어댑터는 아래 경로에 있습니다.
+### Google Antigravity
 
-- [`Platform/`](./Platform)
+Use the prompt package in `Platform/Google-Antigravity/` for an Antigravity workspace or custom instructions with Unity access through MCP or an equivalent bridge.
 
-## What This Helps With / 해결하려는 문제
+### Claude Artifacts
 
-- image-to-layout translation
-- attached UI mockup or design screenshot to Unity UI realization
-- natural trigger coverage for uploaded mockups, reference images, UI 시안, and 프리팹 생성 requests
-- neutral layer-to-layout tree planning before stack-specific realization
-- candidate item ledgers for semi-automated raster analysis before object promotion
-- item-level UI rect contracts for split runtime leaves, repeated rows, slots, cards, icons, and buttons
-- UGUI anchors and `CanvasScaler`
-- HUD, inventory, popup, and mobile safe-area layout rules
-- UGUI prefab promotion and UI Toolkit template reuse rules for repeated UI structures
-- reuse/variant/new-base decision rules for existing prefabs
-- prefab variant rules for controlled divergence from a shared base
-- sprite/image vs `RawImage` rules for static versus texture-driven UI assets
-- mockup-native resolution rules when a design image exists
-- mockup decomposition rules for deciding what should stay baked, what should split, and what should become reusable blocks
-- repair mode vs greenfield build mode rules for existing-screen fixes versus new UI creation
-- Stitch HTML/CSS export guidance for turning front-end artifacts into stable UGUI containers
-- Figma node-tree export guidance for turning frames, components, and auto-layout into reusable UGUI hierarchy
-- DESIGN.md and design-token intake rules for preserving colors, typography, spacing, shapes, component states, and prose intent
-- Unity mapping rules for translating design-system tokens into UGUI, TextMeshPro, UI Toolkit, and USS
-- asset discovery priority rules for prefab, sprite, font, material, and placeholder reuse order
-- asset naming and folder rules so reusable assets stay discoverable and screen-owned assets stay scoped correctly
-- practical naming and folder examples for shared versus screen-owned assets and variant family organization
-- text layout rules for wrapping, truncation, auto-size discipline, counters, and localization headroom
-- localization-focused examples for longer translated strings, multi-line body text, and number growth
-- safe-area remapping rules for mobile mockups that do not visibly account for notches or home indicators
-- mobile verification profiles for taller phones, wider mobile ratios, and tablet-capable layouts
-- visual comparison and bounded repair examples such as `current UI vs mockup` and `repair only one region`
-- shared asset edit safety rules for deciding when direct base edits are too risky
-- shared asset verification recipes for checking another known usage before direct base edits
-- UI Toolkit container ownership, flex stability, and text overflow guidance
-- concrete MCP call recipes for common UI tasks
-- common failure patterns and recovery guidance
-- final review checks before calling a UI task done
-- screenshot verification loops
-- safer `unity-mcp` prompting across different LLM products
+Use the prompt package in `Platform/Claude-Artifacts/` for a Claude project or artifact workflow connected to Unity tooling.
 
-- 이미지 기반 레이아웃 해석
-- 첨부 UI 시안 또는 디자인 스크린샷을 Unity UI realization 작업으로 연결
-- UGUI 앵커와 `CanvasScaler` 설정
-- HUD, 인벤토리, 팝업, 모바일 safe area 레이아웃 규칙
-- 반복되는 UI 구조를 UGUI prefab 또는 UI Toolkit template으로 재사용하는 규칙
-- 기존 프리팹을 재사용/Variant/신규 생성 중 무엇으로 갈지 판단하는 규칙
-- 공용 base에서 안전하게 분기하는 Prefab Variant 규칙
-- 정적 UI 자산에서 sprite/image와 `RawImage`를 어떻게 구분할지에 대한 규칙
-- 시안 이미지가 있을 때 시안의 원본 해상도를 기준 프레임으로 삼는 규칙
-- 시안 요소를 어디까지 분해하고 어디를 단일 자산, UGUI prefab, UI Toolkit template, 재사용 블록으로 유지할지에 대한 규칙
-- 기존 UI 수정 요청과 신규 UI 생성 요청을 구분하는 작업 모드 규칙
-- Stitch HTML/CSS export를 안정적인 UGUI 컨테이너 구조로 바꾸기 위한 가이드
-- Figma node-tree export의 frame, component, auto-layout을 재사용 가능한 UGUI 계층으로 바꾸기 위한 가이드
-- 색상, 타이포그래피, 간격, 모양, 컴포넌트 상태, prose intent를 보존하기 위한 DESIGN.md 및 design token intake 규칙
-- design-system token을 UGUI, TextMeshPro, UI Toolkit, USS로 옮기기 위한 Unity 매핑 규칙
-- 프리팹, 스프라이트, 폰트, 머티리얼, 플레이스홀더를 어떤 순서로 찾을지에 대한 자산 탐색 우선순위 규칙
-- 재사용 자산은 다시 찾기 쉽고 화면 전용 자산은 범위가 드러나도록 만드는 자산 네이밍/폴더 규칙
-- shared vs screen-owned 자산과 variant family 구성을 실제 트리로 보여주는 실전 예시
-- 줄바꿈, truncation, auto-size 절제, 숫자 영역, 지역화 여유를 위한 텍스트 레이아웃 규칙
-- 긴 번역 문자열, multi-line body text, 숫자 증가에 대응하는 지역화 중심 예시
-- 노치/홈 인디케이터가 없는 시안을 모바일 safe area 안쪽 여백으로 재해석하는 규칙
-- taller phone, wide mobile, tablet 검증 기준을 위한 모바일 검증 프로필
-- `current UI vs mockup`, `repair only one region` 같은 비교/범위 제한 예시
-- 공용 prefab/sprite/material/text style에 대한 직접 수정이 위험한지 판단하는 안전 규칙
-- 공용 자산 직접 수정 전에 다른 known usage를 확인하는 shared asset verification 레시피
-- UI Toolkit 화면에서 container ownership, flex 안정성, text overflow를 다루는 가이드
-- 자주 쓰는 UI 작업용 구체적인 MCP 호출 레시피
-- 자주 실패하는 패턴과 복구 가이드
-- 작업 완료 전에 보는 최종 검수 체크
-- 스크린샷 기반 검증 루프
-- 다양한 LLM 서비스에서 더 안전하게 `unity-mcp`를 쓰는 프롬프트 구성
+## Install for Codex
 
-## Repository Structure / 저장소 구조
+Run these commands from the repository root.
 
-```text
-unity-mcp-ui-layout/
-  SKILL.md
-  agents/
-  references/
+### Windows
 
-Platform/
-  README.md
-  Codex/
-    README.md
-  Google-Antigravity/
-    README.md
-    SYSTEM_PROMPT.md
-  Claude-Artifacts/
-    README.md
-    ARTIFACT_PROMPT.md
-
-examples/
-  README.md
-  *-example.md
-
-templates/
-  mockup-layout-plan.yaml
-
-tests/
-  agent_runbook_keywords.sh
-  layout_snapshot_keywords.sh
-  mockup_layout_plan_schema.sh
-  review_gates_keywords.sh
-  trigger_keywords.sh
-  layer_tree_keywords.sh
-  item_rect_keywords.sh
-  item_candidate_keywords.sh
-  ui_toolkit_docs_keywords.sh
-  ui_stack_selection_keywords.sh
-  ui_toolkit_build_keywords.sh
-  ui_toolkit_forward_contract.sh
-  forward/
-
-docs/
-  validation/
-
-BACKLOG.md
-CONTRIBUTING.md
-CHANGELOG.md
-LICENSE
-MAINTENANCE.md
-RELEASE_CHECKLIST.md
+```powershell
+Copy-Item -Recurse -Force .\unity-mcp-ui-layout $HOME\.codex\skills\
 ```
 
-## How The Pieces Fit / 구성 관계
+### macOS / Linux
 
-Use this section as the repo map: start with the skill, choose an example, then open references only for the specific failure mode or rule you need.
+```bash
+cp -R ./unity-mcp-ui-layout ~/.codex/skills/
+```
 
-이 섹션을 저장소 지도로 보면 됩니다. 먼저 스킬을 읽고, 예시를 고른 다음, 필요한 실패 유형이나 규칙이 있을 때만 레퍼런스를 엽니다.
+## Example Request
 
-- `unity-mcp-ui-layout/SKILL.md` is the fast decision layer: choose the UI stack, decide repair versus build mode, work in vertical slices, and verify before finishing.
-- `unity-mcp-ui-layout/references/` holds the deeper rules for failure modes, UI types, asset decisions, and fallback guidance.
-- `examples/` contains copyable task-shaped prompts that show how to apply the skill without rereading the whole reference set.
-- `Platform/` adapts the same core workflow to other LLM environments while keeping the Codex skill as the canonical source.
-- `unity-mcp-ui-layout/agents/` contains lightweight metadata used for agent discovery and default invocation text.
-- `tests/` contains keyword and metadata checks for trigger coverage, layer-tree guidance, item rect contracts, candidate ledgers, and UI Toolkit public discovery.
-- `tests/ui_toolkit_docs_keywords.sh` checks public UI Toolkit discovery, stack routing, neutral-plan links, platform prompt sync, and release-document triggers.
-- `docs/validation/` explains observed live runs and their limits; `tests/forward/` retains prompts, reports, and fixtures. Stored evidence checks do not launch new agents.
+```text
+Use $unity-mcp-ui-layout to build a 1920x1080 UGUI HUD from the attached layout image.
+Analyze the visual layers into a clean Unity Transform/RectTransform tree before creating objects.
+If item detection is uncertain, keep candidates in a candidate item ledger until reviewed.
+For split runtime or repeated items, record item-level UI rects from the mockup before tuning Unity sizes.
+Group top-level composition into anchor-owned regions, then map it to parent containers and CanvasScaler rules.
+Turn repeated structures into reusable prefabs or reusable layout blocks.
+Keep single-image regions intact unless runtime behavior requires a split.
+Verify the result with screenshots.
+```
 
-- `unity-mcp-ui-layout/SKILL.md`는 빠른 의사결정 레이어입니다. UI 스택을 고르고, repair/build 모드를 정하고, vertical slice로 진행하고, 마무리 전 검증하는 흐름을 담습니다.
-- `unity-mcp-ui-layout/references/`는 실패 패턴, UI 유형, 자산 판단, fallback 규칙 같은 깊은 세부 지식을 담습니다.
-- `examples/`는 전체 레퍼런스를 다시 읽지 않아도 바로 적용할 수 있는 작업형 프롬프트 예시를 담습니다.
-- `Platform/`은 같은 코어 워크플로를 다른 LLM 환경에 맞게 옮긴 어댑터이며, 정본은 여전히 Codex 스킬입니다.
-- `unity-mcp-ui-layout/agents/`는 에이전트 검색과 기본 호출 문구에 쓰이는 가벼운 메타데이터를 담습니다.
-- `tests/`는 trigger coverage, layer-tree guidance, item rect contract, candidate ledger, UI Toolkit public discovery가 문서와 메타데이터에 남아 있는지 확인하는 keyword/metadata check를 담습니다.
-- `tests/ui_toolkit_docs_keywords.sh`는 공개 UI Toolkit discoverability, stack routing, 중립 계획 링크, platform prompt 동기화, release 문서 trigger를 확인합니다.
-- `docs/validation/`은 실제 실행 결과와 한계를 설명하고, `tests/forward/`는 프롬프트·보고서·검증 이미지를 보존합니다. 저장된 근거를 검사하는 것만으로 새 에이전트 실행을 검증한 것은 아닙니다.
+## Platform Examples
 
-## Release Notes / 릴리스 노트
+### Codex
 
-- [`CHANGELOG.md`](./CHANGELOG.md)
-- [`BACKLOG.md`](./BACKLOG.md)
+```text
+Use $unity-mcp-ui-layout to repair the current inventory layout in UGUI.
+Preserve the style, fix slot spacing and scaling drift, and verify at 1920x1080 plus one narrower aspect ratio.
+Keep repeated slot structures reusable instead of rebuilding them one by one.
+```
 
-## Maintenance Docs / 운영 문서
+### Google Antigravity
 
-- [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md)
-- [`MAINTENANCE.md`](./MAINTENANCE.md)
+```text
+Build this Unity HUD from the attached mockup at 1920x1080.
+Choose the target UI stack, create a neutral layer-to-layout tree, and implement top-level regions with that stack's native layout system.
+Verify the result with screenshots.
+```
 
-## Validation / 검증
+### Claude Artifacts
 
-Run the focused checks when release prep or discoverability wording changes.
+```text
+Using the attached mockup, help me build a 1920x1080 Unity HUD in UGUI.
+Work in an artifact-style loop with sections for Plan, Current Change, Verification, and Next Step.
+```
 
-릴리스 준비나 discoverability 문구를 바꾼 경우 아래 집중 검증을 실행합니다.
+## Validation
+
+Run the focused checks when release preparation or public workflow guidance changes:
 
 ```bash
 bash tests/agent_runbook_keywords.sh
@@ -311,124 +187,21 @@ python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py unity-mc
 git diff --check
 ```
 
-The [2026-09-09 live capability validation](./docs/validation/2026-09-09-agent-capability-routing.md) records real Codex and OpenCode sessions under Orca. Both interpreted the diagnostic image. An initial OpenCode question-relay contradiction was corrected in the instructions and passed a same-session follow-up; both reports are retained. Actual image generation, Unity execution, Paseo/Claude runs, and a vision-disabled runtime were not exercised. The shell checks above cover documentation/schema contracts and stored evidence, not those execution paths.
+The [2026-09-09 live capability validation](./docs/validation/2026-09-09-agent-capability-routing.md) records real Codex and OpenCode sessions under Orca. Both interpreted the diagnostic image. An initial OpenCode question-relay contradiction was corrected in the instructions and passed a same-session follow-up; both reports are retained.
 
-[2026-09-09 실제 기능 검증 기록](./docs/validation/2026-09-09-agent-capability-routing.md)에는 Orca에서 실행한 Codex·OpenCode의 이미지 판독 결과가 있습니다. 두 세션 모두 검증 이미지를 판독했습니다. OpenCode의 최초 질문 전달 해석 오류를 지침에 반영한 뒤 같은 세션에서 재검증했으며, 최초·수정 후 보고서를 함께 보존했습니다. 실제 이미지 생성·Unity 실행·Paseo/Claude·비전 비활성 런타임은 미검증입니다. 위 shell 검사는 문서·스키마와 저장된 근거를 확인합니다.
+Actual image generation, Unity execution, Paseo/Claude runs, and a vision-disabled runtime were not exercised. The shell checks above cover documentation/schema contracts and stored evidence, not those execution paths.
 
-## Platform Notes / 플랫폼 설명
+## Release and Maintenance
 
-### Codex
+- [Changelog](./CHANGELOG.md)
+- [Backlog](./BACKLOG.md)
+- [Release checklist](./RELEASE_CHECKLIST.md)
+- [Maintenance notes](./MAINTENANCE.md)
 
-Use the skill folder directly by copying `unity-mcp-ui-layout` into your Codex skills directory.
+## Notes
 
-`unity-mcp-ui-layout` 폴더를 Codex 스킬 디렉터리로 복사해서 바로 사용할 수 있습니다.
-
-### Google Antigravity
-
-Use the prompt package in `Platform/Google-Antigravity/` as the base instruction set for an Antigravity workspace or custom skill-like setup that has access to Unity through MCP or an equivalent bridge.
-
-`Platform/Google-Antigravity/`의 프롬프트 패키지를 Antigravity 워크스페이스 또는 커스텀 지침에 넣어서 사용할 수 있습니다. Unity와는 MCP 또는 유사한 브리지를 통해 연결된 상태를 가정합니다.
-
-### Claude Artifacts
-
-Use the prompt package in `Platform/Claude-Artifacts/` as the base instruction for a Claude project or artifact workflow that is connected to Unity tooling.
-
-`Platform/Claude-Artifacts/`의 프롬프트 패키지를 Claude 프로젝트 또는 artifact 워크플로의 기본 지침으로 사용할 수 있습니다.
-
-## Install For Codex / Codex 설치
-
-### Windows
-
-```powershell
-Copy-Item -Recurse -Force .\unity-mcp-ui-layout $HOME\.codex\skills\
-```
-
-### macOS / Linux
-
-```bash
-cp -R ./unity-mcp-ui-layout ~/.codex/skills/
-```
-
-## Example Request / 예시 요청
-
-```text
-Use $unity-mcp-ui-layout to build a 1920x1080 UGUI HUD from the attached layout image.
-Analyze the visual layers -> clean Unity Transform/RectTransform tree before creating objects.
-If item detection is uncertain, keep candidates in a candidate item ledger with review decisions before promoting them.
-For split runtime or repeated items, record item-level UI rects from the mockup source rect before tuning Unity sizes.
-Group the top-level composition into anchor-owned regions, then translate it into parent containers and CanvasScaler rules.
-Turn repeated structures into reusable prefabs or reusable layout blocks.
-If a region looks like a single image resource, keep it as one image unless runtime behavior requires it to be split.
-Verify the result with screenshots instead of relying on raw pixel placement.
-```
-
-```text
-$unity-mcp-ui-layout를 사용해서 첨부한 레이아웃 이미지를 기준으로 1920x1080 UGUI HUD를 만들어줘.
-오브젝트를 만들기 전에 visual layers -> clean Unity Transform/RectTransform tree로 레이어/트리 구조를 먼저 분석해줘.
-item detection이 불확실하면 후보를 candidate item ledger에 두고 검토 결정 후 승격해줘.
-분리되는 runtime 또는 repeated item은 목업 source rect를 기준으로 item-level UI rect를 먼저 기록한 뒤 Unity 크기를 조정해줘.
-최상단 구성을 먼저 anchor 기준 영역으로 그룹화한 뒤 부모 컨테이너와 CanvasScaler 규칙으로 변환해줘.
-반복 구조는 재사용 가능한 프리팹 또는 레이아웃 블록으로 만들어줘.
-단일 이미지 리소스로 보이는 영역은 런타임 동작상 분리가 필요할 때만 나눠줘.
-절대 픽셀 배치 대신 스크린샷 검증으로 결과를 확인해줘.
-```
-
-## Platform Examples / 플랫폼별 예시
-
-### Codex
-
-```text
-Use $unity-mcp-ui-layout to repair the current inventory layout in UGUI.
-Preserve the style, fix slot spacing and scaling drift, and verify at 1920x1080 plus one narrower aspect ratio.
-Keep repeated slot structures reusable instead of rebuilding them one by one.
-```
-
-```text
-$unity-mcp-ui-layout를 사용해서 현재 UGUI 인벤토리 레이아웃을 수정해줘.
-기존 스타일은 유지하고, 슬롯 간격과 스케일링 드리프트를 고친 뒤
-1920x1080과 더 좁은 비율 한 가지에서 검증해줘.
-반복되는 슬롯 구조는 하나씩 다시 만들지 말고 재사용 가능한 형태로 유지해줘.
-```
-
-### Google Antigravity
-
-```text
-Build this Unity HUD from the attached mockup at 1920x1080.
-Choose the target UI stack, create a neutral layer-to-layout tree, realize top-level regions with that stack's native layout system, and verify with screenshots.
-```
-
-```text
-첨부한 목업을 기준으로 1920x1080 Unity HUD를 만들어줘.
-대상 UI stack을 고르고 중립 layer-to-layout tree를 만든 뒤, 해당 stack의 native layout system으로 top-level 영역부터 구현해줘.
-그 결과를 스크린샷으로 검증해줘.
-```
-
-### Claude Artifacts
-
-```text
-Using the attached mockup, help me build a 1920x1080 Unity HUD in UGUI.
-Please work in an artifact-style loop with sections for Plan, Current Change, Verification, and Next Step.
-```
-
-```text
-첨부한 목업을 바탕으로 1920x1080 UGUI HUD를 만들 수 있게 도와줘.
-Artifact 스타일로 Plan, Current Change, Verification, Next Step 섹션을 나눠서 진행해줘.
-```
-
-## Notes / 참고
-
-- The Codex skill is the source of truth.
-- The platform folders adapt the same workflow for other LLM services.
-- The `examples/` folder contains practical prompt examples for common UI tasks.
-- `CONTRIBUTING.md` explains how to extend the repo without making the skill harder to use.
-- Real project usage should drive future refinements.
-- Repeated UI structures should usually be documented through the selected stack's reusable mechanism, not as repeated manual reconstruction steps.
-- Decorative areas that are likely single image assets should stay simple unless interaction or adaptive behavior requires decomposition.
-
-- Codex 스킬이 정본입니다.
-- `Platform/` 폴더는 같은 워크플로를 다른 LLM 서비스에 맞게 변환한 것입니다.
-- `examples/` 폴더에는 자주 쓰는 UI 작업용 실전 예시 프롬프트가 들어 있습니다.
-- `CONTRIBUTING.md`에는 저장소를 확장할 때 스킬 사용성을 해치지 않도록 하는 기여 가이드가 들어 있습니다.
-- 실제 프로젝트에서 사용하면서 얻는 피드백을 기준으로 계속 보완하는 것이 좋습니다.
-- 반복되는 UI 구조는 수동 재구성 절차보다 선택한 스택의 재사용 수단을 기준으로 문서화하는 편이 좋습니다.
-- 장식 영역이 단일 이미지 에셋으로 보이면, 상호작용이나 적응형 동작이 필요할 때만 분해하는 편이 좋습니다.
+- The Codex skill is the source of truth; platform adapters follow the same workflow.
+- Real project usage should guide future refinements.
+- Document repeated UI through the selected stack's reusable mechanism.
+- Keep decorative single-image areas simple unless interaction or adaptive behavior requires decomposition.
+- Keep the English, Korean, and Simplified Chinese README pages aligned when changing the overview, commands, or verification limits. Linked references retain their own languages.
