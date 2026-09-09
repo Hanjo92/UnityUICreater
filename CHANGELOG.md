@@ -50,6 +50,8 @@ Included feature PRs / 포함 기능 PR: [#72](https://github.com/Hanjo92/unity-
 
 ### Validation / 검증
 
+- Updated the UI Toolkit changelog check to accept notes retained in a dated release section after release preparation, while still requiring the recorded workflow changes.
+- 릴리스 준비로 변경 기록을 버전 섹션에 옮긴 뒤에도 UI Toolkit 검사에 포함되도록 수정했습니다.
 - Passed all 12 shell checks, shell syntax, skill validation, four YAML parses, local document links, evidence JSON/observations, probe and tested-source hashes, and `git diff --check`.
 - [Live capability validation](docs/validation/2026-09-09-agent-capability-routing.md) records actual Orca-run Codex/OpenCode image input and bounded routing answers. The OpenCode correction was evaluated in the same session. Actual generation, Unity execution, Paseo/Claude, and a vision-disabled runtime were not exercised.
 - shell 검사 12개, shell 문법, 스킬·YAML·문서 링크·저장 검증 자료와 소스 해시 검사를 통과했습니다. 실제 검증 범위는 Orca의 Codex·OpenCode 이미지 입력과 역할 판단이며, 이미지 생성·Unity 실행 및 나머지 런타임 검증과 구분합니다.
