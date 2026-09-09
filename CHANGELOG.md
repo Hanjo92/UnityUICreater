@@ -6,6 +6,14 @@ This project follows a lightweight documentation-focused release flow.
 
 ## Unreleased
 
+## v0.7.0 - 2026-09-09
+
+This release brings first-class UI Toolkit realization, explicit planning and review contracts, project-image reuse, and capability-based delegation. Image-generation questions and execution require a qualified generation owner; technical success and visual verification remain separate.
+
+UI Toolkit 구현 경로, 명시적인 계획·검수 기준, 프로젝트 이미지 재사용, 실행자 기능에 따른 역할 분담을 포함합니다. 이미지 생성 여부 질문과 생성은 자격을 확인한 담당자에게만 허용하며, 기술 검사와 시각 검증을 구분합니다.
+
+Included feature PRs / 포함 기능 PR: [#72](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/72), [#73](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/73), [#74](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/74), [#75](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/75), [#77](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/77), [#81](https://github.com/Hanjo92/unity-mcp-ui-layout/pull/81).
+
 ### Added
 
 - Added durable Orca-run Codex/OpenCode capability evidence, including successful image-input probes, the initial OpenCode generation-question relay contradiction, and the successful same-session follow-up after clarifying coordinator-only relay; actual generation and Unity execution remain untested
@@ -39,6 +47,12 @@ This project follows a lightweight documentation-focused release flow.
 - VisualTreeAsset template, 조건부 runtime host, screenshot/console 검증을 포함한 UI Toolkit build와 재사용 가능한 UXML/USS 가이드 추가
 - UI Toolkit 검증 완료 조건으로 import, compile, screenshot, console evidence를 기록하도록 추가
 - UI Toolkit docs keyword test를 추가하고 public index, platform prompt, maintenance, contribution, release validation trigger를 동기화
+
+### Validation / 검증
+
+- Passed all 12 shell checks, shell syntax, skill validation, four YAML parses, local document links, evidence JSON/observations, probe and tested-source hashes, and `git diff --check`.
+- [Live capability validation](docs/validation/2026-09-09-agent-capability-routing.md) records actual Orca-run Codex/OpenCode image input and bounded routing answers. The OpenCode correction was evaluated in the same session. Actual generation, Unity execution, Paseo/Claude, and a vision-disabled runtime were not exercised.
+- shell 검사 12개, shell 문법, 스킬·YAML·문서 링크·저장 검증 자료와 소스 해시 검사를 통과했습니다. 실제 검증 범위는 Orca의 Codex·OpenCode 이미지 입력과 역할 판단이며, 이미지 생성·Unity 실행 및 나머지 런타임 검증과 구분합니다.
 
 ## v0.6.0 - 2026-06-26
 

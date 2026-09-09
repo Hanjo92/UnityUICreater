@@ -4,6 +4,8 @@ Reusable Unity UI workflow rules for `unity-mcp`, packaged first as a Codex skil
 
 `unity-mcp`를 사용할 때 Unity UI를 더 안정적으로 만들기 위한 워크플로 규칙 모음입니다. 기본 형태는 Codex 스킬이며, 다른 LLM 플랫폼에서도 사용할 수 있도록 확장되어 있습니다.
 
+Current release / 최신 릴리스: [v0.7.0](https://github.com/Hanjo92/unity-mcp-ui-layout/releases/tag/v0.7.0) · [Changelog / 변경 기록](./CHANGELOG.md)
+
 The repository is built around one core idea: when an LLM creates Unity UI from a mockup, screenshot, structured export, or target resolution, it should first produce a neutral layer-to-layout tree, then use the selected stack's layout, reuse, scaling, and verification mechanisms instead of copying raw pixels.
 
 이 저장소의 핵심 아이디어는 하나입니다. LLM이 목업, 스크린샷, structured export, 목표 해상도를 바탕으로 Unity UI를 만들 때, 먼저 중립 `layer-to-layout tree`를 만들고 선택한 스택의 레이아웃, 재사용, 스케일링, 검증 수단으로 구현해야 한다는 점입니다.
