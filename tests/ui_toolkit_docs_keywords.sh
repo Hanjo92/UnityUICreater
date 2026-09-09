@@ -203,7 +203,8 @@ assert_contains "$release_checklist" "YAML parsing" "release validation"
 assert_contains "$release_checklist" "bash -n" "release validation"
 assert_contains "$release_checklist" "git diff --check" "release validation"
 
-unreleased="$(awk '/^## Unreleased$/{capture=1; next} capture && /^## /{exit} capture{print}' "$ROOT_DIR/CHANGELOG.md")"
+# Keep checking the history after release prep moves notes out of Unreleased.
+changelog="$(cat "$ROOT_DIR/CHANGELOG.md")"
 for phrase in \
   "stack selection before realization" \
   "neutral mockup layout plan v2" \
@@ -214,7 +215,7 @@ for phrase in \
   "중립 mockup layout plan v2" \
   "UI Toolkit build와 재사용 가능한 UXML" \
   "UI Toolkit 검증"; do
-  assert_contains "$unreleased" "$phrase" "Unreleased changelog"
+  assert_contains "$changelog" "$phrase" "changelog history"
 done
 
 printf 'UI Toolkit public/discovery documentation checks passed.\n'
