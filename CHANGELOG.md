@@ -6,6 +6,11 @@ This project follows a lightweight documentation-focused release flow.
 
 ## Unreleased
 
+### Changed / 변경
+
+- Made the main README English-first, added separate Korean and Simplified Chinese pages with top-level language navigation, and consolidated duplicate overview and repository guidance.
+- 메인 README를 영어로 정리하고 상단 언어 링크로 연결한 한국어·중국어 간체 페이지를 추가했으며, 중복 개요와 저장소 안내를 통합했습니다.
+
 ## v0.7.0 - 2026-09-09
 
 This release brings first-class UI Toolkit realization, explicit planning and review contracts, project-image reuse, and capability-based delegation. Image-generation questions and execution require a qualified generation owner; technical success and visual verification remain separate.
