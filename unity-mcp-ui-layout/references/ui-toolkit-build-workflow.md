@@ -15,6 +15,8 @@ Do not infer the stack from loose asset presence. A runtime `UIDocument`, an Edi
 
 ## 2. Approve the Neutral Plan First
 
+Use `ui-planning-workflow.md` to settle material design/structure and asset choices, carrying forward prior user answers. A supplied mockup requires project-image discovery under `asset-discovery-priority.md`; use `image-asset-workflow.md` for agreed missing-image generation and UI Toolkit image/background assignment.
+
 Produce and approve the `mockup-layout-plan/v2` artifact before creating UXML, USS, C#, or host objects. It must include the layout contract, stack realization, layout tree, candidate item ledger, item rect plan, asset plan, `behavior_plan`, and main plus alternate verification targets. The `behavior_plan` section is always present; write `behavior_plan: []` when no behavior is needed.
 
 Resolve containers, repeated units, scroll ownership, responsive intent, and text behavior before choosing assets or tuning styles. Detailed shared-asset edit safety remains in `shared-asset-edit-safety.md`; this workflow only records which shared assets are intended for reuse.

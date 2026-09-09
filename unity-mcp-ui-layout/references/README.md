@@ -6,7 +6,10 @@ Use it when `SKILL.md` points you here for deeper guidance.
 
 ## Core Guidance
 
+- `agent-capability-routing.md` - qualifies each executor for image analysis, skill-backed generation, code, Unity operations, and visual QA; defines artifact handoffs and fallback when vision/tools are missing.
 - `agent-runbook.md` - gives the agent-facing operating sequence after the skill triggers, including mode notes and final response checklist.
+- `ui-planning-workflow.md` - resolves purpose, behavior, composition, structure, and temporary-resource choices through sequential questions before dependent implementation.
+- `image-asset-workflow.md` - requires project image discovery for mockups and connects agreed image generation to inspection, import, assignment, and visual verification for either UI stack.
 - `ui-stack-selection.md` - defines stack selection precedence and the required target, Unity version, and UI-root evidence before stack-specific work.
 - `layout-checklist.md`
 - `layout-snapshot-contract.md` - defines the ideal Unity UI layout snapshot MCP contract and smaller-call fallback before existing UI edits.

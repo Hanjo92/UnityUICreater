@@ -4,6 +4,7 @@ Use this guide when a mockup, screenshot, design image, or UI 시안 exists and 
 
 Use `../../templates/mockup-layout-plan.yaml` when the decomposition needs a concise machine-readable v2 plan with `layout_contract, stack_realization, layout_tree, candidate_item_ledger, item_rect_plan, asset_plan, behavior_plan, verification_targets`.
 Use `review-gates-and-assumptions.md` when deciding whether an ambiguity should pause for user confirmation or proceed with named assumptions.
+Use `agent-capability-routing.md` when the analyst and implementation worker differ. Raster candidates require verified vision or an attributed visual-analysis handoff; no-human-review fallback does not compensate for a model that cannot see the source image.
 
 ## Goal
 
@@ -62,7 +63,7 @@ The template policy is strict: accepted candidates may become item rect entries 
 
 Use the v2 template at `../../templates/mockup-layout-plan.yaml`: define the neutral hierarchy in `layout_tree`, select the chosen stack in `stack_realization`, connect accepted item rects to `asset_plan`, and record known ownership only in `behavior_plan`.
 
-If no human review is available, accept only high-confidence candidates with a clear parent hint, split reason, and runtime or reuse evidence. Keep low-confidence or decorative candidates held, build parent structure first, and avoid creating crop assets from uncertain candidates.
+If no human review is available, accept only high-confidence candidates with a clear parent hint, split reason, and runtime or reuse evidence within the already agreed design scope. Keep low-confidence or decorative candidates held, build parent structure first only where authorized by that agreement, and avoid creating crop assets from uncertain candidates. Unresolved design or major structure choices remain pending under `ui-planning-workflow.md`.
 
 For each runtime or repeated item, record:
 
@@ -72,7 +73,7 @@ For each runtime or repeated item, record:
 - parent-local rect or fit mode after parent ownership is known
 - `placement_intent` for parent flow, edge ownership, stretch, overlay, or manual placement
 - split/keep reason tied to runtime behavior, dynamic data, state, animation, adaptive layout, reuse, baked art, or decoration
-- `asset_plan_id` referencing existing asset reuse, mockup-derived crop, 9-slice candidate, placeholder, or keep-whole image in `asset_plan`
+- `asset_plan_id` referencing existing asset reuse, agreed generated image, mockup-derived crop, 9-slice candidate, authorized placeholder, or keep-whole image in `asset_plan`
 
 Only apply this contract to items that deserve separate runtime or reuse ownership. Do not create rect entries for decorative sub-parts inside baked art just because their edges are visible. If a decorative region stays whole, record the outer region rect and keep internal shapes inside the same image or sprite.
 

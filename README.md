@@ -30,9 +30,9 @@ If you are using this repository for the first time, do not start by reading eve
 
 1. Open [`unity-mcp-ui-layout/SKILL.md`](./unity-mcp-ui-layout/SKILL.md) first if you are using the Codex skill directly.
 2. Choose the UI stack first, before realization: `UGUI` or `UI Toolkit`.
-3. Create and approve a neutral layer-to-layout tree before stack-specific realization.
-4. Choose the change mode next: repair an existing screen or build a new one.
-5. Decide whether this is layout-only work or asset-aware reuse work.
+3. Choose the change mode: repair an existing screen or build a new one.
+4. For a new screen or redesign, resolve open design and structure choices through sequential questions, then agree on the neutral layer-to-layout tree before realization. Carry forward prior answers.
+5. With a mockup, inspect and reuse suitable project images; for missing roles, ask about generation and generate only with an available image-generation skill and usable execution path. Without that skill, skip both even if a standalone image tool exists. Honor explicit layout-only requests.
 6. If the task includes Stitch HTML/CSS, Figma node-tree exports, `DESIGN.md`, design tokens, or another design source, identify whether it is a hierarchy source, a style source, or both before editing.
 7. Then open [`examples/README.md`](./examples/README.md) for a task-shaped entry point, [`unity-mcp-ui-layout/references/agent-runbook.md`](./unity-mcp-ui-layout/references/agent-runbook.md) for agent execution order, or jump into [`unity-mcp-ui-layout/references/README.md`](./unity-mcp-ui-layout/references/README.md) if you already know the failure mode.
 
@@ -42,15 +42,34 @@ Codex should also treat natural requests such as "build this Unity UI from the a
 
 1. Codex 스킬을 직접 쓴다면 먼저 [`unity-mcp-ui-layout/SKILL.md`](./unity-mcp-ui-layout/SKILL.md)부터 엽니다.
 2. UI 스택을 구현 전에 먼저 고릅니다: `UGUI` 또는 `UI Toolkit`.
-3. 스택별 realization 전에 중립 `layer-to-layout tree`를 만들고 승인합니다.
-4. 그다음 기존 화면 수정인지, 신규 화면 생성인지 작업 모드를 고릅니다.
-5. 이 작업이 layout-only인지, asset-aware reuse까지 필요한지 결정합니다.
+3. 기존 화면 수정인지, 신규 화면 생성인지 작업 모드를 고릅니다.
+4. 새 화면이나 재설계는 미정인 시안과 구조를 순차적으로 질문하고, 구현 전에 중립 `layer-to-layout tree`를 확정합니다. 이미 답한 내용은 유지합니다.
+5. 시안이 있으면 프로젝트 이미지를 확인하고 적합한 리소스를 재사용합니다. 이미지 생성 스킬을 보유하고 실행할 수 있을 때만 부족한 임시 리소스의 생성 여부를 묻고 생성합니다. 스킬이 없으면 도구만 있어도 질문·생성을 생략하며, 명시적인 layout-only 요청은 우선합니다.
 6. 작업에 Stitch HTML/CSS, Figma node-tree export, `DESIGN.md`, design token, 또는 다른 design source가 포함되어 있다면 수정 전에 그것이 구조 소스인지, 스타일 소스인지, 둘 다인지 먼저 구분합니다.
 7. 그 후 작업형 진입점이 필요하면 [`examples/README.md`](./examples/README.md)를, 에이전트 실행 순서가 필요하면 [`unity-mcp-ui-layout/references/agent-runbook.md`](./unity-mcp-ui-layout/references/agent-runbook.md)를, 실패 유형을 이미 알고 있다면 [`unity-mcp-ui-layout/references/README.md`](./unity-mcp-ui-layout/references/README.md)를 엽니다.
 
 처음 해볼 작은 연습 과제가 필요하다면 더 구체적인 예시를 고르기 전에 [`examples/first-layout-pass-example.md`](./examples/first-layout-pass-example.md)부터 시작합니다.
 
 Codex는 "첨부한 UI 시안을 기준으로 Unity UI를 만들어줘" 또는 "이 시안으로 프리팹 생성해줘"처럼 스킬명을 명시하지 않는 자연어 요청도 이 스킬 대상으로 봐야 합니다.
+
+## Planning and Image Resources / 단계별 계획과 이미지 리소스
+
+Follow [UI planning](./unity-mcp-ui-layout/references/ui-planning-workflow.md), then the [image asset workflow](./unity-mcp-ui-layout/references/image-asset-workflow.md). Agree on unresolved design and structure choices, reuse suitable project images, and generate only the agreed gaps when a qualified executor is available. Missing asset indexes use direct project discovery. The [worked example](./examples/planned-ui-with-project-images-example.md) covers prior answers, generation declined/unavailable, and both UI stacks.
+
+단계별 질문부터 이미지 적용까지는 [UI 계획 흐름](./unity-mcp-ui-layout/references/ui-planning-workflow.md), [이미지 리소스 흐름](./unity-mcp-ui-layout/references/image-asset-workflow.md), [대화 예제](./examples/planned-ui-with-project-images-example.md)를 참고합니다. 자산 인덱스가 없어도 프로젝트 이미지를 직접 찾고, 생성 이미지는 선택한 UI 스택에서 검수·임포트·할당·화면 검증까지 진행합니다.
+
+## Mixed Agents and Orchestration / 서브에이전트와 오케스트레이션
+
+For Orca/Paseo-managed sessions, Claude/OpenCode workers, or API delegates, follow [agent-capability-routing.md](./unity-mcp-ui-layout/references/agent-capability-routing.md) and the [mixed-agent example](./examples/mixed-agent-ui-workflow-example.md). Verify capabilities in each executing session before assigning roles. Provider names and parent capabilities do not qualify a child. Only the designated coordinator may relay a verified generator's question; a skill-less implementation child cannot ask or forward it.
+
+| Role / 역할 | Required evidence / 필요한 근거 |
+| --- | --- |
+| Image analysis and visual QA / 이미지 분석·시각 검수 | Actual image delivery and interpretation for the current revision / 현재 이미지가 실제로 전달되고 내용을 확인할 수 있어야 함 |
+| Image generation / 이미지 생성 | The same executor has read its generation skill and has a usable execution path / 생성 담당자가 스킬을 읽고 실행 경로를 갖춰야 함 |
+| Structure and code / 구조·코드 구현 | An approved structured plan and access to assigned files / 승인된 구조·측정 정보와 담당 파일 접근 권한 |
+| Unity application and capture / Unity 적용·촬영 | Verified project/Editor access and the relevant tools / 해당 프로젝트·Editor 접근과 작업 도구 확인 |
+
+Orca·Paseo·Claude·OpenCode·API 등 이름으로 기능을 가정하지 않고 실행 세션별로 확인합니다. 비전이 없는 작업자는 확인된 구조·좌표·자산 정보를 받아 구현하고, 이미지 분석과 시각 검수는 실제 이미지를 볼 수 있는 담당자에게 배정합니다. 생성 스킬·도구는 생성 담당자에게 있어야 하며, 총괄은 검증된 담당자의 생성 질문만 전달할 수 있습니다. 촬영·임포트·코드 검사 성공과 시각 검증 결과를 구분하고, 팀에 비전이 없으면 필요한 이미지 분석과 시각 검증은 미완료로 남깁니다.
 
 ## Quick Rules / 빠른 작업 기준
 
@@ -216,6 +235,13 @@ tests/
   item_rect_keywords.sh
   item_candidate_keywords.sh
   ui_toolkit_docs_keywords.sh
+  ui_stack_selection_keywords.sh
+  ui_toolkit_build_keywords.sh
+  ui_toolkit_forward_contract.sh
+  forward/
+
+docs/
+  validation/
 
 BACKLOG.md
 CONTRIBUTING.md
@@ -238,6 +264,7 @@ Use this section as the repo map: start with the skill, choose an example, then 
 - `unity-mcp-ui-layout/agents/` contains lightweight metadata used for agent discovery and default invocation text.
 - `tests/` contains keyword and metadata checks for trigger coverage, layer-tree guidance, item rect contracts, candidate ledgers, and UI Toolkit public discovery.
 - `tests/ui_toolkit_docs_keywords.sh` checks public UI Toolkit discovery, stack routing, neutral-plan links, platform prompt sync, and release-document triggers.
+- `docs/validation/` explains observed live runs and their limits; `tests/forward/` retains prompts, reports, and fixtures. Stored evidence checks do not launch new agents.
 
 - `unity-mcp-ui-layout/SKILL.md`는 빠른 의사결정 레이어입니다. UI 스택을 고르고, repair/build 모드를 정하고, vertical slice로 진행하고, 마무리 전 검증하는 흐름을 담습니다.
 - `unity-mcp-ui-layout/references/`는 실패 패턴, UI 유형, 자산 판단, fallback 규칙 같은 깊은 세부 지식을 담습니다.
@@ -246,6 +273,7 @@ Use this section as the repo map: start with the skill, choose an example, then 
 - `unity-mcp-ui-layout/agents/`는 에이전트 검색과 기본 호출 문구에 쓰이는 가벼운 메타데이터를 담습니다.
 - `tests/`는 trigger coverage, layer-tree guidance, item rect contract, candidate ledger, UI Toolkit public discovery가 문서와 메타데이터에 남아 있는지 확인하는 keyword/metadata check를 담습니다.
 - `tests/ui_toolkit_docs_keywords.sh`는 공개 UI Toolkit discoverability, stack routing, 중립 계획 링크, platform prompt 동기화, release 문서 trigger를 확인합니다.
+- `docs/validation/`은 실제 실행 결과와 한계를 설명하고, `tests/forward/`는 프롬프트·보고서·검증 이미지를 보존합니다. 저장된 근거를 검사하는 것만으로 새 에이전트 실행을 검증한 것은 아닙니다.
 
 ## Release Notes / 릴리스 노트
 
@@ -273,8 +301,17 @@ bash tests/layer_tree_keywords.sh
 bash tests/item_rect_keywords.sh
 bash tests/item_candidate_keywords.sh
 bash tests/ui_toolkit_docs_keywords.sh
-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py unity-mcp-ui-layout
+bash tests/ui_stack_selection_keywords.sh
+bash tests/ui_toolkit_build_keywords.sh
+bash tests/ui_toolkit_forward_contract.sh
+for test in tests/*.sh; do bash -n "$test" || exit 1; done
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py unity-mcp-ui-layout
+git diff --check
 ```
+
+The [2026-09-09 live capability validation](./docs/validation/2026-09-09-agent-capability-routing.md) records real Codex and OpenCode sessions under Orca. Both interpreted the diagnostic image. An initial OpenCode question-relay contradiction was corrected in the instructions and passed a same-session follow-up; both reports are retained. Actual image generation, Unity execution, Paseo/Claude runs, and a vision-disabled runtime were not exercised. The shell checks above cover documentation/schema contracts and stored evidence, not those execution paths.
+
+[2026-09-09 실제 기능 검증 기록](./docs/validation/2026-09-09-agent-capability-routing.md)에는 Orca에서 실행한 Codex·OpenCode의 이미지 판독 결과가 있습니다. 두 세션 모두 검증 이미지를 판독했습니다. OpenCode의 최초 질문 전달 해석 오류를 지침에 반영한 뒤 같은 세션에서 재검증했으며, 최초·수정 후 보고서를 함께 보존했습니다. 실제 이미지 생성·Unity 실행·Paseo/Claude·비전 비활성 런타임은 미검증입니다. 위 shell 검사는 문서·스키마와 저장된 근거를 확인합니다.
 
 ## Platform Notes / 플랫폼 설명
 

@@ -1,6 +1,6 @@
 ---
 name: unity-mcp-ui-layout
-description: "Use when Unity UI needs layout-focused implementation or repair through `unity-mcp`: attached UI mockup, mockup screenshot, uploaded design image, dropped design image, reference image, wireframe, or UI 시안; analyze visual layers with a layer-to-layout-tree pass/레이어 트리 구조; create candidate item ledgers; map item-level UI rects; turn or convert into UGUI/UI Toolkit; create Unity UI prefabs/프리팹 생성; or fix drift, safe area, text overflow, structured exports, tokens, or shared prefab reuse."
+description: "Use when Unity UI needs sequential design planning, layout-focused implementation, or repair through `unity-mcp`: attached UI mockup, mockup screenshot, uploaded design image, dropped design image, reference image, wireframe, or UI 시안; analyze visual layers with a layer-to-layout-tree pass/레이어 트리 구조; create candidate item ledgers; map item-level UI rects; turn or convert into UGUI/UI Toolkit; create Unity UI prefabs/프리팹 생성; or fix drift, safe area, text overflow, structured exports, tokens, or shared prefab reuse."
 ---
 
 # Unity MCP UI Layout
@@ -14,6 +14,7 @@ Use this skill for Unity UI work where layout stability matters more than raw pi
 ## When to Use
 
 - A mockup, screenshot, or wireframe needs to become runtime Unity UI.
+- A new Unity screen needs sequential planning with the user before its design and structure are implemented.
 - An attached UI mockup, layout image, mockup screenshot, uploaded or dropped design/reference image, or UI 시안 should become UGUI, UI Toolkit, or Unity UI prefabs.
 - Natural wording such as "turn this reference image into UI", "convert this mockup to a prefab", "시안 던져줄게", or "프리팹 만들어줘" should trigger this skill.
 - A visual design needs a layer-to-layout-tree pass so the neutral layout tree is approved before stack-specific object creation.
@@ -76,20 +77,24 @@ For structured export intake and hierarchy mapping, read `references/stitch-html
 
 ### 4. Asset Strategy
 
-- Start in **layout-only mode** by default.
-- Switch to **asset-aware mode** only when existing prefab, sprite, font, material, or design-system reuse clearly matters.
-- Missing `unity-resource-rag`, asset catalogs, or asset indexes is a supported fallback, not an error condition.
+- With a supplied mockup or UI 시안, use **asset-aware mode**: inspect project images and reuse suitable resources before proposing generated art or placeholders. An explicit user request for layout-only work takes precedence.
+- Use **layout-only mode** for structural work without an art requirement; preserve already assigned assets during bounded repairs.
+- Missing `unity-resource-rag`, catalogs, or indexes means direct asset discovery and inspection, not permission to skip project images.
+- For missing images, first verify that the agent has an available image-generation skill and read its instructions. Only with that skill and a usable generation path may you ask about temporary-resource generation or generate images. Without the skill, skip both the generation question and generation; a standalone tool/API is insufficient. Existing authorization or refusal settles the choice, not the skill prerequisite. Follow `references/image-asset-workflow.md` for execution and fallback.
 
 ## Requires and Fallbacks
 
+- Before delegated/orchestrated work, use `references/agent-capability-routing.md` to verify each executing session's skills, generation tools, vision, artifact access, and Unity access. Do not infer inheritance or capability from Orca/Paseo, Claude/OpenCode, API, or model names.
+- Assign raster analysis and visual QA only to an executor with verified image input and interpretation. Text-only workers implement approved structured handoffs; screenshot capture, file access, and code checks do not prove visual inspection. If no qualified reviewer exists, keep required visual analysis/verification pending.
+- Keep generation questions and execution with a verified skill-owning generation executor. A coordinator may relay that executor's question; parent skills plus child tools do not automatically qualify the child. Apply the generation skill's own inspection requirements when splitting generation and review roles.
 - This skill assumes Unity is available through `unity-mcp` or an equivalent MCP bridge.
 - It works best when you can inspect the current scene or UI document and verify with screenshots.
 - When editing existing Unity UI, capture a layout snapshot or equivalent smaller-call evidence before structural edits: target surface, Unity version evidence, selected object (`selection.selected_object`), active UI root (`selection.active_ui_root`), UI stack, root layout owners, screenshot frame, and console state.
 - Structured export artifacts are valid first-class inputs even when direct Figma or Stitch API access is unavailable.
 - If a `DESIGN.md` or token source is present, style decisions should be traced back to that source where practical.
 - `@google/design.md` CLI checks are useful when available, but missing CLI tooling is a supported fallback.
-- Use asset-aware retrieval only when the environment supports it and the task actually needs reuse-sensitive decisions.
-- If asset retrieval is unavailable or low-confidence, continue with structure-first layout work, use placeholders or directly inspected assets, and keep uncertain visuals provisional.
+- Use indexed asset retrieval when available; otherwise inspect project assets directly through the Unity bridge or filesystem and previews.
+- If no suitable asset can be found, follow the agreed generation or provisional-fallback decision. Continue independent, agreed structure work and keep missing visuals explicit.
 
 ## Quick Success Signal
 
@@ -107,6 +112,7 @@ For structured export intake and hierarchy mapping, read `references/stitch-html
 
 - Identify the active scene or `UIDocument` before editing.
 - Choose the UI stack, change mode, design source, and asset strategy explicitly.
+- For new screens or substantial redesigns, follow `references/ui-planning-workflow.md`: inspect, ask about unresolved purpose/behavior, propose composition and structure, settle resource choices, then implement the agreed plan. Reuse prior answers and authorization; small repairs do not require a fresh planning cycle.
 - If a structured export source exists, normalize it into a semantic tree before copying any coordinates.
 - If a design-system source exists, extract the tokens, prose intent, component states, and any do/don't guardrails before styling.
 - If no structured hierarchy source exists and a mockup, screenshot, reference image, or UI 시안 exists, run a layer-to-layout-tree pass before creating objects and keep that neutral layout tree as the layout contract.
@@ -134,7 +140,7 @@ For structured export intake and hierarchy mapping, read `references/stitch-html
 
 ### 3. Reuse Carefully and Locally
 
-- Start in layout-only mode and only switch into asset-aware mode when reuse clearly matters.
+- For mockup-driven work, inspect and use suitable project images; use an available image-generation skill for agreed missing or replacement art only, keeping temporary assets visibly provisional.
 - Promote repeated structures into the stack's reusable unit when repetition is real: UGUI prefabs for UGUI, or UXML/`VisualTreeAsset` templates plus USS classes for UI Toolkit.
 - For scroll-heavy UIs, keep the scroll shell structural and treat repeated rows/cards/cells as the reusable unit.
 - Prefer scoped variants, wrappers, or screen-owned overrides over direct shared-base edits for one-screen requests.
@@ -157,6 +163,9 @@ For structured export intake and hierarchy mapping, read `references/stitch-html
 
 Do not call the task done until every applicable check below passes:
 
+- Material design and structure choices were settled with the user or covered by explicit delegation; required pending answers did not become speculative UI.
+- For delegated work, each role had verified capabilities and accessible input revisions. Record technical and visual evidence owners separately; a worker's completion or screenshot capture did not substitute for final visual review of the current output.
+- For mockup-driven work, project image discovery and chosen paths are recorded, with gaps and any explicit layout-only exception named. Generation questions and execution occurred only with an available image-generation skill. Generated art has skill identity, generation/import/assignment/visual-check evidence, and temporary or final status recorded.
 - A fresh whole-screen verification screenshot exists.
 - For existing Unity UI edits, a layout snapshot or equivalent smaller-call intake identified target surface, Unity version evidence, selected object (`selection.selected_object`), active UI root (`selection.active_ui_root`), UI stack, layout ownership, screenshot frame, and console state before structural changes.
 - If a mockup, screenshot, or wireframe was provided, one final review pass was run against it after implementation changes.
@@ -180,6 +189,8 @@ Do not call the task done until every applicable check below passes:
 ### First Stop
 
 - `references/agent-runbook.md`
+- `references/agent-capability-routing.md`
+- `references/ui-planning-workflow.md`
 - `references/layout-checklist.md`
 - `references/layout-snapshot-contract.md`
 - `references/common-failures.md`
@@ -210,6 +221,7 @@ Do not call the task done until every applicable check below passes:
 ### Asset Reuse and Shared-Asset Safety
 
 - `references/asset-discovery-priority.md`
+- `references/image-asset-workflow.md`
 - `references/existing-prefab-reuse.md`
 - `references/prefab-reuse.md`
 - `references/prefab-variants.md`

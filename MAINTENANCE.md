@@ -73,6 +73,10 @@ flowchart TD
 
 ## Lightweight Validation Checklist / 가벼운 검증 체크
 
+- Consult [the recorded live capability validation](docs/validation/2026-09-09-agent-capability-routing.md) for tested sessions, source hashes, the initial failure, and the follow-up. Preserve failed and corrected reports when adding runs; distinguish stored-evidence checks from new execution and document untested runtimes.
+- For agent routing changes, review `examples/mixed-agent-ui-workflow-example.md`: missing vision, dropped image attachments, parent/child skill mismatch, generation-only workers, unavailable Unity access, artifact transfer, and stale evidence. Check both qualified role assignment and pending-check reporting; examples are not live cross-runtime verification.
+
+- When planning or image-resource guidance changes, review the boundary scenarios in `examples/planned-ui-with-project-images-example.md` against the runbook and both new references. Check prior authorization, pending answers, direct discovery without indexes, generation declined/unavailable, no image-generation skill despite a callable image tool, and both UI stacks. These scenarios are expectations, not automated behavioral evidence.
 - frontmatter is still valid and readable
 - agent runbook keyword checks still cover trigger naming, task classification, Unity-state intake, input-mode notes, and final response checklist
 - layout snapshot keyword checks still cover active root, UI stack, screenshot frame, fallback calls, and console state wording
@@ -92,7 +96,9 @@ flowchart TD
 - UI Toolkit build, reusable UXML/USS, runtime-host qualification, screenshot, and console verification guidance remains synchronized
 - run YAML parsing, `bash -n`, and `git diff --check` when these public documents change
 
+- [실제 기능 검증 기록](docs/validation/2026-09-09-agent-capability-routing.md)의 세션·소스 해시·최초 실패·재검증을 확인합니다. 새 실행을 추가할 때 실패와 수정 후 보고서를 모두 보존하고, 저장 근거 검사와 새 실행 및 미검증 런타임을 구분합니다.
 - frontmatter가 여전히 정상 파싱되는지 확인합니다.
+- 계획·이미지 리소스 지침 변경 시 `examples/planned-ui-with-project-images-example.md`의 경계 사례를 runbook 및 연결된 참조 문서와 대조합니다. 예제는 기대 동작이며 자동 행동 검증 결과가 아닙니다.
 - agent runbook keyword check가 trigger naming, task classification, Unity-state intake, input-mode note, final response checklist를 계속 커버하는지 확인합니다.
 - layout snapshot keyword check가 active root, UI stack, screenshot frame, fallback call, console state 문구를 계속 커버하는지 확인합니다.
 - mockup layout plan schema check가 required section과 accept/hold/reject promotion rule을 계속 커버하는지 확인합니다.

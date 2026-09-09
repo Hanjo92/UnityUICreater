@@ -1,0 +1,22 @@
+{
+  "codex": {
+    "checks": {
+      "red_circles": true,
+      "blue_squares": true,
+      "green_triangles": true,
+      "printed_code": true
+    },
+    "image_probe_result": "pass",
+    "geometry_precision": "not_tested"
+  },
+  "opencode": {
+    "checks": {
+      "red_circles": true,
+      "blue_squares": true,
+      "green_triangles": true,
+      "printed_code": true
+    },
+    "image_probe_result": "pass",
+    "geometry_precision": "not_tested"
+  }
+}

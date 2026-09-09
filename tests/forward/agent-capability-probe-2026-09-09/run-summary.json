@@ -1,0 +1,46 @@
+{
+  "run_id": "run_f75c88eda0b1",
+  "runtime": "Orca 1.4.198",
+  "opencode_version": "1.18.27",
+  "tasks": [
+    {
+      "id": "task_d47e16472abc",
+      "status": "completed"
+    },
+    {
+      "id": "task_e3db9b3520ce",
+      "status": "completed"
+    },
+    {
+      "id": "task_2579c2403847",
+      "status": "completed"
+    }
+  ],
+  "dispatches": {
+    "codex_initial": "ctx_3b36006119f7",
+    "opencode_initial": "ctx_438326e5bc97",
+    "opencode_retest": "ctx_e09909f12a2a"
+  },
+  "sessions_created": 2,
+  "retest_used_existing_opencode_session": true,
+  "image_probes": {
+    "codex": "pass",
+    "opencode": "pass"
+  },
+  "initial_routing": {
+    "codex": "pass",
+    "opencode": "needs_correction: contradictory allowance for skill-less child to relay generation question"
+  },
+  "retest_routing": {
+    "opencode_scenario_a": "pass",
+    "opencode_scenario_b": "pass",
+    "opencode_scenario_c": "pass"
+  },
+  "actual_generation_call": "not_run",
+  "unity_execution": "not_run",
+  "paseo_execution": "not_run: executable/session not found in checked local environment",
+  "claude_execution": "not_run: executable/session not found in checked local environment",
+  "actual_nonvision_model_execution": "not_run: both tested sessions interpreted the probe; unavailable-vision fallback evaluated as a reasoning scenario",
+  "worker_cleanup": "Both created terminals released after worker_done; original OpenCode dispatch transferred to retest before final release",
+  "normalization": "Worker report/spec copies replace coordinator temp and repository prefixes with $PROBE_ROOT and $REPO_ROOT, and the local home prefix with $USER_HOME. No dispatch capability tokens or credential values are copied."
+}

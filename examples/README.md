@@ -55,6 +55,10 @@ realization 전에 [`ui-stack-selection.md`](../unity-mcp-ui-layout/references/u
 
 ## How to Use
 
+For mixed runtimes or subagents with different vision, image-generation skills/tools, and Unity access, use [mixed-agent-ui-workflow-example.md](./mixed-agent-ui-workflow-example.md). Roles follow verified session capabilities, with a structured handoff for text-only workers.
+
+For a new screen that needs design questions, project image reuse, and temporary sprite generation, start with [planned-ui-with-project-images-example.md](./planned-ui-with-project-images-example.md). It includes expected behavior for unavailable generators, pending answers, explicit layout-only work, and UI Toolkit targets.
+
 1. Pick the example closest to your task.
 2. Copy the prompt and adapt the target resolution, UI stack, and requested scope.
 3. Keep top-level region ownership explicit in the neutral layer-to-layout tree, use the selected stack's reuse mechanism, and avoid over-splitting likely single-image assets.

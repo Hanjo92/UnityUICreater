@@ -1,0 +1,44 @@
+{
+  "source_files_read": [
+    "$REPO_ROOT/unity-mcp-ui-layout/references/agent-capability-routing.md",
+    "$REPO_ROOT/unity-mcp-ui-layout/references/image-asset-workflow.md"
+  ],
+  "scenario_a": {
+    "actors": "L: designated coordinator, readable image-generation skill, generation tool/execution path unknown. B: image tool, no generation skill, no vision. R: can see images.",
+    "lead_L": "May perform coordinator duties now: own scope/decisions/dispatch, read the skill's SKILL.md, and verify its own generation execution path. It is NOT yet a qualified generation owner because a skill-owning parent whose execution path is still unknown is not yet a qualified generator; therefore it may not originate a generation question yet and may not authorize B's tool as a substitute. Once its path is verified usable, L may originate the question itself or relay it to the user.",
+    "child_B": "May act only as structural/code worker and/or visionless Unity operator/capture worker (given verified access). It must NOT ask or forward the generation question to the user on L's behalf, even though L requested it; it reports the capability gap to the coordinator instead. It may NOT generate: the generation-skill prerequisite is unmet and a standalone image tool, API, or credentials do not satisfy it.",
+    "reviewer_R": "May serve as visual analyst/asset reviewer and visual QA reviewer for actual images, provided its vision is verified for those exact images; vision does not grant user art acceptance.",
+    "unmet_prerequisites": [
+      "L's generation tool/execution path is unverified (unknown), so L is not yet a qualified generator and no generation question may originate yet",
+      "B lacks an image-generation skill (question and generation both blocked for B)",
+      "B lacks vision (no raster analysis, visual matching, crop bounds, or screenshot-fidelity claims; no visual PASS)"
+    ]
+  },
+  "scenario_b": {
+    "actors": "C: designated coordinator, no generation skill. G: separate generator with verified generation skill and usable execution path.",
+    "who_originates": "G, as the qualified generation owner (skill available AND usable execution path), originates the concrete generation question.",
+    "who_relays": "Only the designated coordinator C may relay G's concrete question to the user and record the user's answer once for the team. C must not invent a generation offer from its own tool list.",
+    "qualifies_skill_less_child": false,
+    "explanation": "Relay is a message channel, not a capability transfer: a skill-less implementation child still cannot ask, forward, or generate; skill on G plus a tool on a child does not qualify either automatically. The child reports needs_capability and generation stays with G."
+  },
+  "scenario_c": {
+    "situation": "No worker has received usable image input; a readable approved structured plan exists.",
+    "can_proceed": [
+      "Authorized text/token/export-based planning and implementation from the agreed structured contract (structural/code work, measured handoffs, stack-appropriate structure)",
+      "Text workers may transform supplied measurements/export data with source attribution and marked unknowns",
+      "A qualified Unity operator without vision may import, assign, read back resolved references, run technical checks, and capture screenshots, returning technical evidence and images for review, not a visual PASS"
+    ],
+    "must_remain_unverified": [
+      "All raster-derived decisions and independent visual interpretation (no one may invent or inherit one)",
+      "Visual analysis of mockups/candidates and final visual QA (fit, clipping, readability, transparency, consistency) — verification gap, not not_applicable",
+      "Any visual PASS or claim that the UI is visually verified; visual evidence stays pending until a verified visual owner receives the actual images",
+      "User visual acceptance of art remains separate regardless"
+    ],
+    "rule": "If raster analysis is required to define the contract, stop that dependent work while continuing independent inspection; do not label the UI visually verified."
+  },
+  "limitations": [
+    "Read-only evaluation: no repository files edited, no images read or generated, no other agents spawned, no installs, no user questions performed",
+    "Role assignments above assume each actor's other access (artifact/filesystem/Unity) is separately verified per the routing doc; this report only evaluates the generation/vision/relay constraints stated in the scenarios",
+    "Only this retest.json was written; report.json was not overwritten"
+  ]
+}

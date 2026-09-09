@@ -4,6 +4,7 @@ Use this guide when the user provides, uploads, attaches, or drops a layout imag
 
 Pair it with `mockup-resolution.md` when the mockup's own native pixel size should become the planning reference frame.
 Pair it with `mockup-decomposition.md` when you need a stricter rule for deciding what should stay as one asset versus what should become runtime-owned UI.
+Use `ui-planning-workflow.md` to settle unresolved design/structure choices and temporary-resource use before implementation, and `image-asset-workflow.md` for project image reuse and generated sprite application.
 Use `../../templates/mockup-layout-plan.yaml` when the agent needs a concise machine-readable v2 plan with `layout_contract, stack_realization, layout_tree, candidate_item_ledger, item_rect_plan, asset_plan, behavior_plan, verification_targets`.
 
 ## Goal
@@ -39,18 +40,23 @@ When image-to-layout work intersects with asset reuse, keep the layout workflow 
 
 - If `unity-resource-rag` is unavailable, continue with image-to-layout translation using the existing layout rules.
 - Preserve structure-first execution: build regions, placement ownership, and parent containers before spending time on final art selection.
-- Use placeholder visuals or existing manually discovered assets when retrieval support is missing.
-- Explicitly say that asset-aware retrieval was skipped when `unity-resource-rag` is unavailable.
+- Inspect existing assignments, sprite/atlas entries, and nearby project image folders directly when retrieval support is missing. Reuse suitable project images for the supplied design.
+- Explicitly say that indexed retrieval was unavailable and name the direct discovery evidence; asset-aware work still applies.
 - If `unity-resource-rag` is available but retrieval confidence is low, do not force an asset match just to claim reuse.
 - Keep the layout workflow moving, mark visuals as provisional, and verify structure first.
 - Never present missing or low-confidence asset-RAG capability as a hard blocker unless the user explicitly requires asset-index-backed reuse.
 - Keep any asset-mode disclosure to one or two lines.
 - In asset-aware mode, say that existing project assets will be retrieved and reused where confidence is high.
-- In layout-only mode, say that the task will proceed without asset-index-backed retrieval, focus on stable structure first, and use placeholders or directly inspected assets if needed.
+- Use layout-only mode for a supplied mockup only when the user chose that scope. Missing indexes alone do not select it.
+- For missing image roles, verify an available image-generation skill before any generation question or execution. Without that skill, skip both and use project assets or an authorized provisional fallback; a standalone tool is insufficient. Do not present unconfirmed design or art choices as settled.
 
 ## Translation Procedure
 
+Raster interpretation requires verified vision for the actual source image. Under `agent-capability-routing.md`, a text-only worker may consume a qualified analyst's source-linked plan or a structured export, but must not invent raster layers, item rects, or visual matches. A screenshot path, OCR text, or file dimensions alone do not satisfy this requirement.
+
 ### 1. Run a layer pass
+
+For new screens and redesigns, resolve material purpose/behavior and composition choices through `ui-planning-workflow.md`. Existing design agreement remains valid; a layer pass does not require repeating settled questions.
 
 Before creating Unity objects, describe the layer stack from broad to narrow:
 
@@ -119,7 +125,7 @@ For each mapped item, record:
 - fit mode: stretch, fixed, preserve-aspect, sliced, layout-group child, or manual exception
 - `placement_intent`: how the item should attach, flow, or grow inside its parent
 - split/keep reason: runtime data, interaction, state, animation, adaptive layout, reuse, baked art, or decoration
-- `asset_plan_id`: reference to the matching `asset_plan` entry for existing asset reuse, mockup-derived crop, 9-slice candidate, placeholder, or keep-whole image
+- `asset_plan_id`: reference to the matching `asset_plan` entry for existing asset reuse, agreed generated image, mockup-derived crop, 9-slice candidate, authorized placeholder, or keep-whole image
 
 Each `asset_plan` entry records `creates_runtime_node` so asset generation cannot silently imply a new layout node. Use `behavior_plan` separately for known behavior ownership; do not infer behavior from visual decomposition alone.
 
