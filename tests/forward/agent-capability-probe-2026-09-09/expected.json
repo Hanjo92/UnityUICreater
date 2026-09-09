@@ -1,0 +1,11 @@
+{
+  "red_circles": 2,
+  "blue_squares": 1,
+  "green_triangles": 1,
+  "code": "40979",
+  "resolution": [
+    480,
+    320
+  ],
+  "sha256": "3c1d90a29cacdd6cbc9b55a8c0980bd368f955ec3842b28c8e2c885d2f324572"
+}

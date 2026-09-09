@@ -1,0 +1,96 @@
+{
+  "task": "Validate unity-mcp-ui-layout skill capability-routing assumptions in a real opencode worker session",
+  "executor": {
+    "runtime": "opencode (Orca worker terminal)",
+    "model_exposed": "glm-5.3-flash (model id: opencode-go/glm-5.3-flash), per session system prompt",
+    "note": "Runtime/model identity is context only, not capability evidence, per agent-capability-routing.md"
+  },
+  "capabilities": [
+    {
+      "name": "artifact_access",
+      "state": "verified",
+      "evidence": "Read all three required repository files (SKILL.md, references/agent-capability-routing.md, references/image-asset-workflow.md); wrote this report.json to the assigned writable directory."
+    },
+    {
+      "name": "vision_input_and_interpretation",
+      "state": "verified",
+      "evidence": "Read tool returned probe.png (480x320 8-bit RGB PNG, confirmed via `file`) as an attached media image delivered into the model context; observations below come from its actual pixels. Attachment path used: $PROBE_ROOT/probe.png."
+    },
+    {
+      "name": "image_generation_skill",
+      "state": "unavailable",
+      "evidence": "Session available_skills list contains no applicable image-generation skill (only Unity/game-ops, UI, browser, orchestration, and superpowers skills). No image-generation SKILL.md is available or readable to this session, so per the skill prerequisite both the generation question and generation must be skipped."
+    },
+    {
+      "name": "generation_execution",
+      "state": "unavailable",
+      "evidence": "No image-generation tool or execution path is exposed in this session's toolset (bash/edit/glob/grep/question/read/skill/task/todowrite/webfetch/websearch/write only). No images were generated, per task constraints."
+    },
+    {
+      "name": "filesystem_access",
+      "state": "verified",
+      "evidence": "Read/listed repo and temp directories; `file` on probe.png confirmed PNG 480x320; write access exercised in the assigned opencode/ directory."
+    },
+    {
+      "name": "unity_access",
+      "state": "unavailable",
+      "evidence": "No unity-mcp or equivalent Unity bridge tools are exposed in this session; no live Editor connection available."
+    },
+    {
+      "name": "screenshot_capture",
+      "state": "unavailable",
+      "evidence": "No Unity/Editor screenshot tooling in this session; not exercised."
+    }
+  ],
+  "image_probe": {
+    "status": "success",
+    "tool_used": "Read tool (opencode built-in file read with image attachment delivery to the model)",
+    "capability_vs_execution": "Tool capability (Read supports image attachments) was confirmed by execution: pixels were actually delivered and interpreted this session.",
+    "observations": {
+      "background": "uniform light gray / off-white",
+      "shapes": [
+        {"shape": "circle", "color": "red", "count": 2, "position": "upper-left area, side by side, roughly equal size (~110px diameter each)"},
+        {"shape": "square", "color": "blue", "count": 1, "position": "upper-right (~115px, aligned with the circles' vertical band)"},
+        {"shape": "triangle", "color": "green", "count": 1, "position": "bottom-center, apex up, pointing at the gap between the two circles"}
+      ],
+      "arrangement": "Two red circles form a left pair in the top row; the blue square sits alone in the top-right; the green triangle is centered below, between and beneath the circles.",
+      "printed_numeric_code": "40979 (bottom-left corner, dark text)"
+    }
+  },
+  "routing_case": {
+    "scenario": "Coordinator has an image-generation skill; child has an image tool but no generation skill and no vision; separate reviewer can see images.",
+    "coordinator": {
+      "roles": "Owns scope, decisions, dispatch, and final evidence. Because it holds the image-generation skill (and assuming its skill-specified execution path is usable), it is the qualified generation owner: it may ask the user about generation and/or generate, or relay its own concrete generation question through the child. It may also relay. It must attribute visual findings to the qualified reviewer rather than claim to have seen images itself (coordinator may be text-only).",
+      "may_generate": true,
+      "condition": "Only with the generation skill available to it AND a usable generation path per that skill's instructions; skill identity and path must be recorded."
+    },
+    "child": {
+      "roles": "Structural/code worker and/or Unity operator / capture worker only (if its project access is separately verified). The standalone image tool does not qualify it: per image-asset-workflow.md a standalone tool, API, or credentials do not satisfy the generation-skill prerequisite. Without vision it cannot do raster analysis, visual asset matching, crop bounds, or screenshot fidelity claims; as a visionless operator it returns technical evidence and images for review, not a visual PASS.",
+      "may_ask_user_about_generation": false,
+      "may_generate": false,
+      "reason": "The generation question and generation must both belong to a verified skill-owning executor; the child has neither the skill nor vision. Coordinator relaying the question does not transfer qualification, and skill-on-A + tool-on-B does not qualify either automatically."
+    },
+    "reviewer": {
+      "roles": "Visual analyst / asset reviewer and Visual QA reviewer, provided its vision is verified for the exact actual images (mockup and generated candidates) at required sizes. Vision does not grant user art acceptance; candidate proposals still need the existing review decision."
+    },
+    "child_completion_report": {
+      "result": "needs_capability",
+      "must_state": [
+        "role/executor identity and runtime/model context",
+        "verified capabilities with evidence and missing capabilities (generation skill: unavailable; vision: unavailable)",
+        "inputs and output revisions, files/targets changed, checks actually run",
+        "explicitly that it did not ask the user about generation and did not attempt generation (no skill prerequisite)",
+        "explicitly that no visual inspection/interpretation was performed by it; visual findings and any visual PASS belong to the named reviewer",
+        "visual evidence owner = the reviewer; result like needs_capability or awaiting_visual_review; local role completion is not whole-task completion",
+        "remaining limitations and next reviewer"
+      ]
+    }
+  },
+  "limitations": [
+    "Only the single probe.png was inspected; no other files in the temp directory (including expected.json and peer outputs) were read, per task constraints.",
+    "Image-generation was not executed (prohibited by task); generation_execution evidence is inventory-only, consistent with the routing doc's rule against paid test images for capability probing.",
+    "Unity access was not exercised because no Unity bridge is exposed here; this probe says nothing about unity-mcp availability in other sessions.",
+    "Vision evidence is self-reported execution from this session; a text-only response alone would not have proven it, but the delivered pixel observations above are the execution proof.",
+    "No repository files, global configuration, or peer outputs were modified; only the assigned opencode/ directory was written."
+  ]
+}

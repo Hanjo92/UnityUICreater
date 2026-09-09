@@ -1,0 +1,245 @@
+{
+  "task_id": "task_d47e16472abc",
+  "dispatch_id": "ctx_3b36006119f7",
+  "outcome": "succeeded",
+  "scope": "Read-only capability inventory, direct image-delivery probe, and independent skill-routing analysis; only this report is written.",
+  "executor": {
+    "runtime": "Codex worker in Orca",
+    "terminal_handle": "term_34dabaf4-68f9-43b9-9103-1edaefbda898",
+    "model": {
+      "declared_family": "GPT-6",
+      "evidence": "Current session instructions identify Codex as an agent based on GPT-6.",
+      "exact_runtime_model": "unknown",
+      "api_route": "unknown",
+      "limitation": "No exact runtime model ID or API endpoint was exposed or inspected; capabilities are based on this session's tools and observed execution, not model branding."
+    },
+    "working_directory": "$REPO_ROOT"
+  },
+  "sources": [
+    {
+      "path": "$REPO_ROOT/unity-mcp-ui-layout/SKILL.md",
+      "sha256": "def07f05e54a776f161dae984cd660f5e33b803e051556c585fb3ee0338553a6",
+      "evidence": "Read current working-tree file, including existing uncommitted changes."
+    },
+    {
+      "path": "$REPO_ROOT/unity-mcp-ui-layout/references/agent-capability-routing.md",
+      "sha256": "2582fa30712d3a884c2a2529aa549a763d195994903d8f81f508d54fb7bf0e2e",
+      "evidence": "Read current working-tree file."
+    },
+    {
+      "path": "$REPO_ROOT/unity-mcp-ui-layout/references/image-asset-workflow.md",
+      "sha256": "c097b75ace83145d786be094002545e7d9f72bcefb6dbf24f8d7da49a547e2e2",
+      "evidence": "Read current working-tree file."
+    }
+  ],
+  "capabilities": {
+    "artifact_read": {
+      "state": "verified",
+      "evidence": [
+        "tools.exec_command successfully read all three assigned current repository files.",
+        "tools.view_image successfully opened the assigned probe.png and delivered pixels to this model."
+      ],
+      "scope": "Assigned repository text files and the single authorized input image."
+    },
+    "artifact_write": {
+      "state": "verified",
+      "evidence": [
+        "This report was written and JSON-parsed back in the authorized codex output directory."
+      ],
+      "scope": "$PROBE_ROOT/codex/report.json"
+    },
+    "image_input_and_vision": {
+      "state": "verified",
+      "evidence": [
+        "tools.view_image is exposed and callable in this executor.",
+        "Called tools.view_image with detail=original for the exact assigned probe.png.",
+        "Forwarded result.image_url through functions.exec image(..., original); the tool result contained a displayed raster image.",
+        "This model directly observed its shapes, colors, arrangement, and numeric code, recorded below."
+      ],
+      "limitation": "Proof is specific to this artifact and this tool-delivery path; it does not prove future or other-agent attachment delivery."
+    },
+    "image_generation_skill": {
+      "state": "verified",
+      "selected_skill": {
+        "name": "imagegen",
+        "path": "$USER_HOME/.codex/skills/.system/imagegen/SKILL.md",
+        "instructions_read": true,
+        "required_execution_path": "Default built-in image_gen tool; CLI fallback only when explicitly chosen or confirmed.",
+        "inspection_requirement": "Inspect outputs and validate subject, style, composition, text accuracy, and invariants; local edit targets must first be inspected with view_image."
+      },
+      "additional_readable_skill": {
+        "name": "imagegen",
+        "path": "$USER_HOME/.codex/skills/imagegen/SKILL.md",
+        "instructions_read": true,
+        "required_execution_path": "Bundled scripts/image_gen.py using the OpenAI Image API; live calls require local API credentials.",
+        "path_readiness": "unknown",
+        "evidence": "Skill text read; CLI dependencies, script execution, and credentials were not inspected or exercised."
+      },
+      "evidence": "Both imagegen skill entries are available in this session's skill catalog and their files were readable; this is not inherited evidence from the coordinator.",
+      "authorization_for_this_task": "Generation explicitly prohibited."
+    },
+    "generation_execution": {
+      "state": "verified",
+      "evidence_level": "tool_inventory_only",
+      "tool": "tools.image_gen__imagegen",
+      "evidence": [
+        "Tool appears in this session's ALL_TOOLS inventory.",
+        "typeof tools.image_gen__imagegen returned function.",
+        "Exposed callable schema supports prompt and image reference inputs, matching the selected built-in skill path."
+      ],
+      "actual_execution": "not_run",
+      "service_execution_success": "unknown",
+      "limitation": "No generation call or paid test was performed; tool inventory qualifies intake, not proof of a successful generated output. No credentials were accessed."
+    },
+    "filesystem": {
+      "state": "verified",
+      "evidence": [
+        "Shell reads of assigned files succeeded.",
+        "The only task-authored file is the designated report, with successful read-back."
+      ],
+      "authorized_write_scope": "$PROBE_ROOT/codex/",
+      "repository_write": "unavailable under this read-only task authorization; no repository mutation attempted"
+    },
+    "project_source_read": {
+      "state": "verified",
+      "evidence": "The current Unity UI skill repository and its assigned references were readable.",
+      "limitation": "This is skill-document access, not inspection of a Unity project's scene, UI target, assets, or console."
+    },
+    "unity_project_read": {
+      "state": "unknown",
+      "evidence": "No intended live Unity project or scene was identified or opened in this bounded diagnostic."
+    },
+    "unity_bridge": {
+      "state": "unavailable",
+      "evidence": "Filtering this session's exposed ALL_TOOLS by Unity tool names returned an empty list.",
+      "limitation": "No Unity MCP tool is exposed here; alternative CLI bridges and Editor connectivity were not investigated. This is not a claim that Unity is absent from the machine."
+    },
+    "unity_live_read": {
+      "state": "unknown",
+      "evidence": "No Editor connection or target inspection was exercised."
+    },
+    "unity_live_write": {
+      "state": "unknown",
+      "evidence": "No Editor mutation was attempted; this task prohibits implementation."
+    },
+    "screenshot_capture": {
+      "state": "unknown",
+      "evidence": "No capture of an intended Unity target was performed.",
+      "limitation": "Opening the supplied PNG is image viewing, not screenshot-capture proof."
+    }
+  },
+  "image_probe": {
+    "status": "verified",
+    "input_path": "$PROBE_ROOT/probe.png",
+    "input_sha256": "3c1d90a29cacdd6cbc9b55a8c0980bd368f955ec3842b28c8e2c885d2f324572",
+    "tool_used": "tools.view_image via functions.exec",
+    "arguments": {
+      "detail": "original"
+    },
+    "delivery_path": "tools.view_image result.image_url -> functions.exec image(result.image_url, original) -> raster image visible to this model",
+    "actual_pixels_received": true,
+    "observations": {
+      "background": "Very light gray, nearly white.",
+      "shapes": [
+        {
+          "shape": "circle",
+          "color": "red",
+          "count": 2,
+          "arrangement": "Side by side across the upper left and upper middle; approximately the same size."
+        },
+        {
+          "shape": "square",
+          "color": "blue",
+          "count": 1,
+          "arrangement": "Upper right, aligned roughly with the red circles."
+        },
+        {
+          "shape": "triangle",
+          "color": "green",
+          "count": 1,
+          "arrangement": "Below the top row, near the horizontal center; points upward."
+        }
+      ],
+      "total_colored_shapes": 4,
+      "printed_numeric_code": "40979",
+      "code_color": "Black or very dark gray.",
+      "code_arrangement": "Bottom left, below the colored shapes."
+    },
+    "evidence_owner": "This Codex executor directly inspected the displayed raster.",
+    "excluded_methods": [
+      "No OCR tool or OCR code.",
+      "No pixel-parsing code.",
+      "No image-to-text proxy.",
+      "No other agent or provider.",
+      "No expected answer file or peer output inspected."
+    ],
+    "identity_note": "SHA-256 was computed with shasum only for input identity; it was not used to derive visual observations."
+  },
+  "routing_case": {
+    "premise_is_independent_of_actual_executor": true,
+    "coordinator": {
+      "eligible_role": "Coordinator, assuming access to requirements, decisions, capability responses, and returned artifacts.",
+      "generator_role": "Conditional only: its own generation skill must be available and read, its own usable execution path must be verified, and it must satisfy any vision or inspection requirements imposed by that skill/task.",
+      "generation_question": "May own the question only when qualified as generation executor, or relay a concrete question from another verified generation owner. Skill ownership alone is insufficient when execution path is unknown.",
+      "visual_roles": "Not established by the case; require this coordinator's own verified vision for the relevant images.",
+      "evidence_boundary": "Must attribute reviewer's visual findings; cannot claim it saw images solely because the reviewer did."
+    },
+    "child": {
+      "eligible_roles": [
+        "Structural/code worker if it has an approved readable plan or structured/measured handoff and verified access to its assigned source files.",
+        "Unity operator/capture worker only if its access to the intended Editor and necessary tools is separately verified; returns technical evidence and screenshots for another owner to review."
+      ],
+      "excluded_roles": [
+        "Image generator: no own generation skill.",
+        "Visual analyst/asset reviewer: no vision.",
+        "Visual QA reviewer: no vision."
+      ],
+      "may_ask_user_about_image_generation": false,
+      "may_generate": false,
+      "may_raise_capability_gap_to_coordinator": true,
+      "reason": "A standalone image tool does not satisfy the generation-skill prerequisite; the parent's skill plus the child's tool does not qualify the child. No vision also precludes independent raster analysis or visual quality claims.",
+      "allowed_work": "Only authorized structured or technical work supported by verified capabilities; preserve explicit gaps and provisional status.",
+      "forbidden_fallbacks": [
+        "Do not install a skill automatically.",
+        "Do not call an alternate image API/provider to bypass qualification.",
+        "Do not infer image contents or visual PASS.",
+        "Do not treat user generation approval as a waiver of the skill prerequisite."
+      ]
+    },
+    "separate_reviewer": {
+      "eligible_roles": [
+        "Visual analyst / asset reviewer for exact accessible input and candidate revisions.",
+        "Visual QA reviewer for exact final images and source design at required display sizes."
+      ],
+      "conditions": "The reviewer must actually receive and interpret the relevant artifacts; a generic claim of vision is not enough.",
+      "generator_role": "Not established; would separately need its own available/read generation skill and usable path.",
+      "user_approval_boundary": "Visual review or technical PASS does not grant user art acceptance."
+    },
+    "required_handoff": "Approved plan/stack/scope, source identity and resolution, coordinate origin and units, source and normalized rects, parent ownership, split/keep reasons, accepted asset paths, evidence owner, authorization, and explicit unknowns.",
+    "child_completion_report": {
+      "required_fields": [
+        "role and executor",
+        "verified and missing capabilities",
+        "input/output identities and revisions",
+        "changed files or Unity targets",
+        "checks actually run",
+        "visual evidence owner and artifact revision",
+        "remaining limitations and next reviewer"
+      ],
+      "status_for_finished_technical_assignment": "complete_for_role",
+      "status_for_generation_assignment": "needs_capability",
+      "status_when_final_visual_review_is_outstanding": "awaiting_visual_review",
+      "sample": "Completed the authorized structured work and recorded only the checks actually run. Generation was not offered or performed because this executor has no image-generation skill, and visual findings belong to the separately qualified reviewer. Generation remains needs_capability and final visual verification remains awaiting_visual_review until the qualified owners return revision-specific evidence."
+    },
+    "inspection_requirement": "Role splitting cannot waive the selected generation skill's own inspection requirements. A visionless generator may execute an approved text brief only if it first owns a generation skill and path and that skill permits the split; this child fails the skill prerequisite before that exception can apply."
+  },
+  "limitations": [
+    "No image generation executed, no generated candidate exists, and no service success or import/assignment/visual QA of generated art is claimed.",
+    "No Unity Editor connection, project target, runtime, import, console, assignment, or screenshot-capture proof.",
+    "The probe proves direct visual interpretation only for this exact input and this executor's current delivery path.",
+    "Exact runtime model ID and API route remain unknown beyond the declared GPT-6 family.",
+    "Existing repository changes were preserved; this diagnostic writes only its authorized report.",
+    "No credentials, full environment dump, expected answers, peer outputs, external provider, installation, or spawned agent were used."
+  ],
+  "report_path": "$PROBE_ROOT/codex/report.json"
+}

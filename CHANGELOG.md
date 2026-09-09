@@ -8,6 +8,10 @@ This project follows a lightweight documentation-focused release flow.
 
 ### Added
 
+- Added durable Orca-run Codex/OpenCode capability evidence, including successful image-input probes, the initial OpenCode generation-question relay contradiction, and the successful same-session follow-up after clarifying coordinator-only relay; actual generation and Unity execution remain untested
+- Added per-executor capability routing for subagents and orchestration: vision/image delivery, generation skill/tools, code and Unity ownership, source-attributed handoffs, and separate visual QA with explicit missing-capability fallbacks
+- Added sequential UI planning that resolves open purpose, behavior, composition, structure, and temporary-resource decisions while preserving prior user answers (#80)
+- Added mockup-driven project image reuse with direct-discovery fallback and an optional image-generation workflow through inspection, import, assignment, and visual verification; generation questions and execution require an available image-generation skill, not just an image tool (#79)
 - Added a Unity UI layout snapshot contract for MCP intake before existing UI edits, including UGUI and UI Toolkit example payloads plus smaller-call fallback guidance
 - Added layout snapshot keyword validation for the snapshot contract, skill entry point, agent metadata, MCP recipes, review checks, and maintenance docs
 - Added a mockup layout plan template, filled prefab-from-mockup example, and schema validator for layer tree, candidate ledger, item rect, asset crop, and verification target planning
@@ -21,6 +25,10 @@ This project follows a lightweight documentation-focused release flow.
 
 ### Added / 추가
 
+- Orca에서 실행한 Codex·OpenCode의 이미지 입력 검증, OpenCode 최초 질문 전달 해석 오류와 총괄만 전달하도록 명확화한 뒤 같은 세션에서 수행한 재검증 근거를 보존; 실제 이미지 생성·Unity 실행은 미검증
+- 서브에이전트·오케스트레이션에서 실행자별 비전·이미지 수신·생성 스킬과 도구·Unity 접근을 확인하고, 구조화된 인계와 역할 분담 및 별도 시각 검수를 수행하는 규칙 추가
+- 기존 답변을 유지하면서 미정인 목적·동작·시안·구조·임시 리소스 사용 여부를 순차적으로 확정하는 UI 계획 흐름 추가 (#80)
+- 시안 기반 프로젝트 이미지 재사용, 직접 탐색 대체 경로, 이미지 생성 스킬 보유 시에만 생성 여부 질문과 생성·검수·임포트·UI 할당·화면 검증을 진행하는 흐름 추가 (#79)
 - 기존 Unity UI 편집 전에 MCP intake로 사용할 Unity UI layout snapshot contract를 추가하고, UGUI/UI Toolkit 예시 payload와 smaller-call fallback 가이드를 포함
 - snapshot contract, skill entry point, agent metadata, MCP recipe, review check, maintenance docs를 확인하는 layout snapshot keyword validation 추가
 - layer tree, candidate ledger, item rect, asset crop, verification target planning을 위한 mockup layout plan template, prefab-from-mockup 예제, schema validator 추가

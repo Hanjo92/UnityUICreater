@@ -4,6 +4,8 @@ Use this guide when you need concrete `unity-mcp` call order instead of only hig
 
 These recipes are intentionally practical. Start from discovery, make one bounded change, then verify.
 
+When using subagents or orchestration, apply `agent-capability-routing.md` before dispatch. Run MCP mutations only through the executor with verified access to the intended Editor and serialize writes to the same target. Send captured images to a qualified visual reviewer; the presence of a screenshot tool does not give a text-only worker vision. Workers without the bridge may prepare scoped code from an approved handoff but cannot claim live import, runtime, or visual evidence.
+
 ## 0. Capture a Layout Snapshot Before Editing
 
 Use this when Unity Editor access is available and the task will edit an existing UI screen, repair a layout, or build a mockup-driven prefab inside a scene.

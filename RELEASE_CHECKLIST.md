@@ -28,6 +28,10 @@ Use this checklist when preparing a tagged release for this repository.
 
 ## Validation / 검증
 
+- Link relevant [live capability evidence](docs/validation/2026-09-09-agent-capability-routing.md) from the release notes, check tested source hashes, and name untested execution paths. A stored report check is not a new agent run or proof of image-generation/Unity success.
+- for delegated UI workflows, review `examples/mixed-agent-ui-workflow-example.md` against `unity-mcp-ui-layout/references/agent-capability-routing.md`; verify that no provider/model label, parent skill, screenshot capture, or stale artifact substitutes for executor capabilities and current visual evidence
+
+- for planning/image-resource changes, review `examples/planned-ui-with-project-images-example.md` for prior answers, pending decisions, direct project discovery, image-generation skill availability/refusal, the tool-only case with no generation questions or execution, provisional assets, and UGUI/UI Toolkit routing; report scenario review separately from automated checks or live Unity evidence
 - validate the repo skill
 - run agent runbook keyword checks when the agent operating sequence, mode notes, or final response checklist changed
 - run layout snapshot keyword checks when Unity UI intake, snapshot contracts, or smaller-call fallback wording changed
@@ -46,7 +50,9 @@ Use this checklist when preparing a tagged release for this repository.
 - quickly read the changed entry points as if you were a first-time user
 - make sure new examples still match the actual rules
 
+- 릴리스 노트에 관련 [실제 기능 검증 근거](docs/validation/2026-09-09-agent-capability-routing.md)를 연결하고 검증한 소스 해시와 미검증 실행 경로를 확인합니다. 저장 보고서 검사는 새 에이전트 실행이나 이미지 생성·Unity 성공 근거가 아닙니다.
 - 저장소 안의 정본 스킬을 검증합니다.
+- 계획·이미지 리소스 변경은 `examples/planned-ui-with-project-images-example.md` 경계 사례를 검토하고 문서 검토, 자동 검사, 실제 Unity 실행 근거를 구분합니다.
 - agent operating sequence, mode note, final response checklist가 바뀌었다면 agent runbook keyword check를 실행합니다.
 - Unity UI intake, snapshot contract, smaller-call fallback 문구가 바뀌었다면 layout snapshot keyword check를 실행합니다.
 - plan template, example, candidate promotion rule, validator가 바뀌었다면 mockup layout plan schema check를 실행합니다.

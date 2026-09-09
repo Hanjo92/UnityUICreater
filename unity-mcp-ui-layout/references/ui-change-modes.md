@@ -58,8 +58,9 @@ flowchart TD
 
 ## Build Mode Rules
 
+- Follow `ui-planning-workflow.md` before dependent creation: resolve purpose/behavior, propose composition and structure, choose resources, and record the agreement. Reuse earlier answers and authorization.
 - Start from the root shell and main regions first.
-- Treat the request as greenfield unless the user explicitly asks to inherit from existing UI.
+- A new screen still inspects reusable project units and, when a mockup is supplied, reuses suitable project images under `asset-discovery-priority.md`.
 - Create structure before visual polish.
 - Use reusable blocks and prefab rules early if repetition is obvious.
 

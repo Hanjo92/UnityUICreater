@@ -4,6 +4,8 @@ Use this guide when mockup-driven UI work has ambiguity. The goal is to avoid tw
 
 ## Decision Rule
 
+- Use `ui-planning-workflow.md` for unresolved product, design, or major structure choices in new screens and redesigns. Read-only inspection and a concrete proposal come before asking for a decision.
+- Honor existing answers, approved plans, and explicit delegation. Ask only about a material decision still outside that agreement; a bounded repair does not need a fresh design approval.
 - Ask the user before editing when the ambiguity can change the target screen, UI stack, shared asset contract, or destructive scope.
 - Continue with named assumptions when the ambiguity is local, reversible, and does not create shared assets or crops from uncertain candidates.
 - Record every assumption and review decision in the final response.
@@ -11,8 +13,9 @@ Use this guide when mockup-driven UI work has ambiguity. The goal is to avoid tw
 
 ## Hard Blockers: Ask Before Editing
 
-Pause for confirmation when any of these are true:
+Pause dependent edits when any of these remain unresolved after inspection and checking prior user instructions:
 
+- **Unconfirmed design or major structure.** Example: a new shop could use tabs or one scrolling catalog, and neither user input nor a supplied design settles the choice. Present a concrete proposal and resolve it before creating that screen.
 - **Unknown UI stack in a mixed-stack project.** Example: both `Canvas` and `UIDocument` are active, the selected target has no established owner, and the user did not identify the target stack.
 - **Unclear target screen or prefab root.** Example: multiple inventory screens are open and the request only says "fix this UI."
 - **Destructive shared-base change.** Example: the repair would directly edit a common prefab, sprite, material, or TMP style used by other screens.
@@ -30,10 +33,10 @@ I need one confirmation before editing: this project has both UGUI and UI Toolki
 Proceed with an explicit assumption when the choice is local and reversible:
 
 - **Mockup native resolution fallback.** If no target resolution is provided, use the image's native resolution as the planning frame.
-- **Layout-only placeholder assets.** If asset retrieval is unavailable or low-confidence, use placeholders and mark visuals provisional.
+- **Layout-only placeholder assets.** If the user chose layout-only scope or allowed placeholders for confirmed gaps, keep them provisional. A missing asset index does not authorize skipping direct project-image discovery or the skill-availability check in `image-asset-workflow.md`. Temporary-generation questions apply only when an image-generation skill is available and usable; without it, skip both the generation question and generation.
 - **Non-destructive local spacing choice.** If two parent-owned spacing interpretations are close, choose the one that preserves anchors and layout groups.
 - **Unknown final copy length.** Use realistic text headroom and note that final localization still needs a content pass.
-- **No human candidate review available.** Build parent structure first, accept only high-confidence runtime/reuse candidates with evidence, keep low-confidence candidates held, and avoid creating crop assets from uncertain candidates.
+- **No human candidate review available.** Within the already agreed design scope, build parent structure first, accept only high-confidence runtime/reuse candidates with evidence, keep low-confidence candidates held, and avoid creating crop assets from uncertain candidates. This fallback does not approve a new screen's unresolved design.
 
 Soft assumption response pattern:
 
@@ -44,7 +47,7 @@ Proceeding with the mockup's native 1440x2560 resolution as the planning frame b
 Soft assumption example:
 
 ```text
-Assumption: asset retrieval is unavailable, so this pass stays layout-only. I will use placeholders, avoid shared-base edits, and mark visuals provisional until project assets are reviewed.
+The user requested a layout-only preview and allowed placeholders for missing images. I will preserve assigned project images and mark the remaining visuals provisional.
 ```
 
 ## Candidate Ledger Review States
@@ -109,11 +112,11 @@ decision_note: "Reject as a separate item. It stays inside the baked card backgr
 
 If no human review is available during the current run:
 
-1. Build the parent-owned layer tree first.
+1. Preserve pending design questions. Build the parent-owned layer tree first only within the already agreed scope; otherwise retain it as a proposal.
 2. Accept only high-confidence candidates with a clear parent hint, split reason, and runtime/reuse evidence.
 3. Hold low-confidence or decorative candidates.
 4. Do not create crop assets from held or rejected candidates.
-5. Prefer placeholders or existing assets over mockup-derived crops when evidence is uncertain.
+5. Prefer suitable existing assets or already authorized placeholders over mockup-derived crops when evidence is uncertain. Do not infer temporary-generation authorization from silence.
 6. Report which candidates were accepted, held, and rejected in the final response.
 
 ## Final Response Requirements
@@ -122,6 +125,8 @@ When assumptions or candidate review decisions affected the work, report:
 
 - hard blockers that were confirmed, or that no hard blockers remained
 - soft assumptions used
+- design/structure agreement and any pending answers that limited implementation
+- project image discovery, temporary-resource decision, and generated-art review status when applicable
 - candidate counts by `accept`, `hold`, and `reject`
 - any accepted candidate promoted into item rect planning
 - held candidates that stayed notes

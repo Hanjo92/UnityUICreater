@@ -6,6 +6,16 @@ This is a final review pass, not a discovery checklist. The goal is to catch iss
 
 For ambiguity handling and candidate review policy, use `review-gates-and-assumptions.md`.
 
+## Agent Capability and Evidence Check
+
+For delegated/orchestrated work, use `agent-capability-routing.md` and check:
+
+- Were roles assigned from current executor evidence rather than parent inheritance, provider/model names, or a claimed tool list? Were unknown capabilities kept ineligible for dependent roles?
+- Did each visual analyst/reviewer receive and inspect the actual source/output revision through a working image-input path? Did text-only workers use approved structured handoffs without inventing raster details?
+- Did the generation owner have its own available skill and usable execution path? If the coordinator relayed a generation question, was it from that verified owner rather than an unqualified tool-only worker?
+- Were file/Editor ownership and artifact transfer clear, with serialized writes to shared targets and limitations returned instead of repeated incapable retries?
+- Were generation, visual art review, import, assignment, technical checks, capture, and final visual QA attributed separately? Did missing vision remain a pending check rather than a visual PASS or unsupported `not_applicable`?
+
 ## 0. Layout Snapshot Intake Check
 
 Use this check when the task edited an existing Unity UI screen or built mockup-driven UI inside an existing scene.
@@ -131,8 +141,9 @@ Use this check when ambiguity was handled during mockup-driven UI work.
 Ask:
 
 - Were hard blockers confirmed before editing, such as unknown UI stack in a mixed-stack project, unclear target screen, destructive shared-base changes, ambiguous repair versus rebuild scope, or missing required runtime behavior?
+- For new screens/redesigns, did `ui-planning-workflow.md` resolve material design and structure choices using prior answers or focused questions before dependent creation? Were pending answers kept pending rather than treated as approval?
 - Were soft ambiguities handled with named assumptions, such as mockup native resolution fallback, layout-only placeholder assets, non-destructive spacing choices, or content-length headroom?
-- If no human review was available, were low-confidence candidates held while parent structure was built first?
+- If no human review was available, were low-confidence candidates held while parent structure was built first only within the already agreed design scope?
 - Were held and rejected candidates prevented from creating runtime nodes, reusable-template children, or crop assets?
 - Did the final response summarize assumptions, candidate decisions, and remaining review risks?
 
@@ -147,7 +158,9 @@ Ask:
 - Do separate elements exist only where interaction, animation, text, or adaptive layout requires them?
 - Were repeated mockup regions promoted into reusable blocks where appropriate instead of being manually rebuilt?
 - If a region was split into item-level UI rects, does each split have a source rect, normalized rect, split reason, and asset/crop plan?
-- If asset-aware mode was active, did we follow a sensible discovery order instead of jumping straight to placeholders?
+- If a mockup was supplied, did we inspect and use suitable project images, including direct discovery without an index, unless the user explicitly chose layout-only scope?
+- If asset-aware mode was active, did we follow `asset-discovery-priority.md` and record inspected paths, selected matches, and missing roles before generation or placeholders?
+- Were generation questions and execution skipped when the agent lacked an available image-generation skill, including environments with only a standalone image tool? With a verified skill and usable execution path, was temporary-resource use resolved from existing instructions or a focused question? Did `image-asset-workflow.md` produce separate generation, import, assignment, screenshot, and temporary/final-status evidence?
 
 If the UI was decomposed more than the runtime behavior needs, simplify it before shipping.
 

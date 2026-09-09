@@ -4,6 +4,8 @@ Use this contract before editing Unity UI when a `unity-mcp` bridge can inspect 
 
 The snapshot is an intake artifact. It does not replace layer-to-tree planning, candidate item review, item rect planning, or screenshot verification.
 
+Snapshot capture and image interpretation are separate capabilities. A text-only Unity operator can collect state and capture the screenshot, then hand the actual artifact and revision to a vision-capable analyst under `agent-capability-routing.md`. Merely returning `screenshot_path` does not prove that any agent received or visually inspected the image.
+
 ## Goal
 
 Capture the current UI state in one predictable shape so the agent does not start editing before it understands the active root, UI stack, parent ownership, layout controllers, assets, screenshot frame, and console state.

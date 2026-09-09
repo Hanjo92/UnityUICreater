@@ -176,3 +176,19 @@ Dimmer와 PopupRoot는 ModalLayer 아래 형제로 두고, safe area는 PopupRoo
 child offset을 만지기 전에 top-level popup 구성을 먼저 잡고, 장식 프레임은 적절하면 단일 이미지로 유지해줘.
 마무리 전에 portrait와 landscape를 검증해줘.
 ```
+
+## Mixed-Agent Execution / 여러 에이전트 실행
+
+Apply [agent-capability-routing.md](../../unity-mcp-ui-layout/references/agent-capability-routing.md) before dispatching to subagents, Orca/Paseo runtimes, Claude/OpenCode workers, or API sessions. Verify skills, tools, vision with actual image delivery, artifact access, and Unity access in each executing session. Do not infer them from a model/provider label or the coordinator's capabilities.
+
+Give text-only workers approved source-attributed plans and measurements, assign generation only to an executor with its own skill and usable tools, and route image analysis/final visual QA to a qualified visual owner. The coordinator may relay that verified generator's question and preserve the user's answer. Serialize writes to shared live targets, transfer actual artifact revisions, and keep technical checks, screenshot capture, and visual review separate. Missing vision leaves visual verification pending. See the [mixed-agent example](../../examples/mixed-agent-ui-workflow-example.md).
+
+서브에이전트마다 실제 이미지 수신·비전·생성 스킬과 도구·파일 접근·Unity 연결을 확인한 뒤 역할을 배정합니다. 비전이 없으면 구조화된 인계 내용을 바탕으로 구현만 수행하고 이미지 분석과 시각 검수는 가능한 담당자에게 넘깁니다. 상위 에이전트의 기능을 하위 에이전트가 상속한다고 가정하지 않습니다.
+
+## Sequential Planning and Image Resources / 단계별 계획과 이미지 리소스
+
+For new screens and substantial redesigns, use [ui-planning-workflow.md](../../unity-mcp-ui-layout/references/ui-planning-workflow.md) to resolve open purpose, behavior, composition, structure, and temporary-resource choices through focused questions. Prior answers and approved plans remain valid; small repairs keep their existing scope.
+
+With a mockup, inspect and reuse suitable project images even without an asset index. For confirmed gaps, verify that the agent has an available image-generation skill and a usable execution path before asking about temporary generation or generating. Without the skill, skip both even if a standalone image tool exists. When generation is agreed and the skill is available, follow [image-asset-workflow.md](../../unity-mcp-ui-layout/references/image-asset-workflow.md) through generation, inspection, import, assignment, and visual verification. Keep provisional art status separate from technical checks. Explicit layout-only requests still take precedence.
+
+새 화면은 미정인 목적·동작·시안·구조를 순차적으로 질문해 확정하고, 이미 답변하거나 승인한 내용은 다시 묻지 않습니다. 시안이 있으면 프로젝트 이미지를 직접 확인하고 적합한 리소스를 재사용합니다. 부족한 이미지는 에이전트가 이미지 생성 스킬을 보유하고 실행할 수 있는 경우에만 임시 리소스 생성 여부를 질문하고 생성·검수·임포트·UI 적용·화면 검증까지 연결합니다. 스킬이 없으면 도구만 있어도 생성 질문과 생성을 생략합니다.

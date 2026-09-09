@@ -322,7 +322,7 @@ Use when asset-aware mode is active and the project likely already has reusable 
 
 ```text
 Treat this as asset-aware work and follow a strict discovery order.
-Check reusable prefabs first, then variant or wrapper paths, then existing sprite-backed visuals, then text style systems, then materials, and use placeholders only if those higher-priority options are unavailable or low-confidence.
+Check reusable prefabs first, then variant or wrapper paths, then existing sprite-backed visuals, then text style systems, then materials. For missing image roles, verify an available image-generation skill and its execution requirements before asking about temporary generation or generating. Without the skill, skip both the generation question and generation even if an image tool exists, and use project assets or authorized placeholders. If an index is unavailable, inspect project assets directly.
 Do not jump straight to placeholder-driven reconstruction while obvious reusable assets still exist.
 ```
 
@@ -424,4 +424,32 @@ Inspect the existing base prefab and determine whether this request should be so
 Keep the base contract intact, limit overrides to local visuals, optional sections, or scoped behavior, and do not push one-screen placement rules into the variant asset.
 If the variant would need too many structural overrides, stop and reconsider a wrapper or new base prefab instead.
 Verify the target variant and one related base-family usage with screenshots.
+```
+
+## Mixed-Agent Capability Routing
+
+Use when work is already delegated or orchestration is authorized. Follow `agent-capability-routing.md`; this prompt does not require creating a fixed team.
+
+```text
+서브에이전트별로 실제 이미지 수신과 비전, 이미지 생성 스킬과 도구,
+작업 파일 접근, Unity 연결을 먼저 확인해서 역할을 나눠줘.
+비전이 없는 작업자에게는 확인된 구조와 좌표, 자산 경로를 전달해 구현만 맡기고,
+이미지 분석과 최종 시각 검수는 해당 이미지를 볼 수 있는 담당자에게 맡겨줘.
+생성 여부 질문과 생성은 스킬을 보유하고 실행 가능한 담당자만 수행해줘.
+상위 에이전트의 기능이나 이미지 첨부가 자동으로 전달된다고 가정하지 말고,
+각 결과에 입력·출력 버전, 실제 수행한 검사와 담당자, 미완료 검증을 남겨줘.
+```
+
+## Sequential UI Planning With Image Resources
+
+Use when a new screen needs user decisions before implementation. Follow `ui-planning-workflow.md` and `image-asset-workflow.md`.
+
+```text
+이 시안으로 Unity UI를 만들되, 먼저 목적과 동작에서 미정인 부분을 하나씩 질문해줘.
+시안과 프로젝트 근거로 영역 구성과 트리 구조를 제안하고, 확정된 내용부터 구현해줘.
+이미 답한 결정은 다시 묻지 말고, 프로젝트 이미지 리소스를 직접 확인해서 적합한 것을 재사용해줘.
+부족한 이미지가 있고 에이전트가 이미지 생성 스킬을 보유하며 실행할 수 있는 경우에만 임시 리소스를 만들지 확인해줘.
+이미지 생성 스킬이 없으면 도구만 있더라도 생성 여부를 묻거나 생성하지 말아줘.
+생성하기로 정한 이미지는 검수하고 Unity에 임포트해 해당 UI에 적용한 뒤 화면에서 검증해줘.
+임시 리소스 여부와 남은 시각 검토는 기술 검증 결과와 구분해서 알려줘.
 ```

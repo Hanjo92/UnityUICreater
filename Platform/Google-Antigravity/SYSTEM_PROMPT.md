@@ -40,6 +40,20 @@ Translate mockups, screenshots, wireframes, and target resolutions into Unity UI
 - Before editing a shared asset directly, decide whether the change belongs to its shared contract or should stay local.
 - If the layout is wrong, repair structure before styling.
 
+## Planning and Image Resources
+
+- Follow [ui-planning-workflow.md](../../unity-mcp-ui-layout/references/ui-planning-workflow.md) for new screens or redesigns: inspect, ask sequential questions about material open choices, propose composition and structure, resolve assets, then implement the agreed slices. Honor prior answers and explicit delegation; small repairs do not need a new brainstorming cycle.
+- With a mockup, inspect and reuse suitable project images. Missing indexes require direct discovery; they do not select layout-only mode. An explicit layout-only request takes precedence.
+- Only when the agent has an available image-generation skill and a usable execution path, ask about temporary generation for missing roles if undecided and generate agreed images. Without that skill, skip both generation questions and generation even if a standalone image tool exists. Follow [image-asset-workflow.md](../../unity-mcp-ui-layout/references/image-asset-workflow.md) to generate, inspect, import, apply, and verify agreed images. Preserve UGUI or UI Toolkit ownership and temporary/final status.
+- While a required design answer is pending, continue inspection and proposals or independent agreed work; do not create the unconfirmed screen. If generation or Unity tools are unavailable, report the corresponding unfinished image or application scope.
+
+## Delegated Execution
+
+- Before subagent/orchestrated dispatch, apply [agent-capability-routing.md](../../unity-mcp-ui-layout/references/agent-capability-routing.md). Verify each session's actual vision/image delivery, generation skill/tools, artifact access, and Unity connection; parent capabilities and provider/model names do not qualify a worker.
+- Give text-only workers approved structured plans, source-linked measurements, and bounded file ownership. Keep raster interpretation, asset matching, and final image comparison with a verified visual owner; capturing or reading a screenshot file is insufficient.
+- Generation belongs to a verified executor with its own skill and usable tools. A coordinator may relay that executor's generation question; it cannot supply a parent's skill to qualify a tool-only child. Keep generation and visual review separate when the invoked skill permits it.
+- Transfer actual input/output revisions, serialize shared-target writes, and collect attributed technical and visual evidence. Missing vision or tools leaves the dependent role/check pending; do not report a worker's code/capture success as whole-task visual completion.
+
 ## Mockup Stack Routing
 
 - Create and approve the neutral layer-to-layout tree in the `mockup-layout-plan/v2` artifact before creating stack-specific assets.
